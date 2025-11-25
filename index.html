@@ -5,33 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manifest&Lua</title>
     <style>
-	::-webkit-scrollbar {
-    width: 8px;           /* ширина полосы */
-}
-
-::-webkit-scrollbar-track {
-    background: #1a1a1a;  /* фон дорожки */
-    border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, #00eaff, #0077ff);
-    border-radius: 10px;
-    border: 2px solid #1a1a1a; /* делает "вырез" и красиво смотрится */
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, #00ffff, #0099ff);
-}
-
-/* === Firefox === */
-* {
-    scrollbar-width: thin;                     /* тонкий скролл */
-    scrollbar-color: #00aaff #1a1a1a;          /* цвет ползунка и трека */
-},
-	* {
-    user-select: none;
-}
         * {
             margin: 0;
             padding: 0;
@@ -48,244 +21,69 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 2rem;
+            padding: 1rem;
         }
         
         .container {
-            max-width: 1000px;
+            max-width: 500px;
             width: 100%;
             background-color: #1a1a2e;
             border-radius: 8px;
-            padding: 2rem;
+            padding: 1.5rem;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            position: relative;
         }
 
-        /* Стили для модального окна предложения игры */
-        .suggest-game-btn {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background: linear-gradient(135deg, #6c5ce7, #a29bfe);
-        color: white;
-        border: none;
-        border-radius: 25px;
-        padding: 12px 20px;
-        font-size: 0.9rem;
-        font-weight: 600;
-        cursor: pointer;
-        box-shadow: 0 4px 15px rgba(108, 92, 231, 0.4);
-        transition: all 0.3s ease;
-        z-index: 1000;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-    }
+        .menu-buttons {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            display: flex;
+            gap: 0.5rem;
+        }
 
-    .suggest-game-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(108, 92, 231, 0.6);
-    }
-
-    .modal-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(15, 15, 35, 0.95);
-        backdrop-filter: blur(3px);
-        display: none;
-        justify-content: center;
-        align-items: center;
-        z-index: 2000;
-        animation: fadeIn 0.2s ease;
-    }
-
-    .suggest-modal {
-        background: linear-gradient(135deg, #1a1a2e, #16213e);
-        border-radius: 10px;
-        padding: 1.5rem;
-        width: 85%;
-        max-width: 400px;
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
-        border: 1px solid #2d3436;
-        animation: slideUp 0.3s ease;
-    }
-
-    .modal-header {
-        text-align: center;
-        margin-bottom: 1.5rem;
-    }
-
-    .modal-header h2 {
-        color: #6c5ce7;
-        font-size: 1.4rem;
-        margin-bottom: 0.3rem;
-    }
-
-    .modal-header p {
-        color: #636e72;
-        font-size: 0.85rem;
-    }
-
-    .form-group {
-        margin-bottom: 1rem;
-    }
-
-    .form-label {
-        display: block;
-        margin-bottom: 0.3rem;
-        color: #e6e6e6;
-        font-weight: 600;
-        font-size: 0.9rem;
-    }
-
-    .form-input, .form-textarea {
-        width: 100%;
-        padding: 0.6rem 0.8rem;
-        border-radius: 5px;
-        border: 1px solid #2d3436;
-        background-color: #0f0f23;
-        color: #e6e6e6;
-        font-size: 0.9rem;
-        transition: border-color 0.3s;
-    }
-
-    .form-input:focus, .form-textarea:focus {
-        outline: none;
-        border-color: #6c5ce7;
-        box-shadow: 0 0 0 2px rgba(108, 92, 231, 0.2);
-    }
-
-    .form-textarea {
-        resize: vertical;
-        min-height: 80px;
-        font-family: inherit;
-    }
-
-    .modal-buttons {
-        display: flex;
-        gap: 0.8rem;
-        margin-top: 1.5rem;
-    }
-
-    .btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-        padding: 0.6rem 1.2rem;
-        border-radius: 4px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: background-color 0.3s;
-        border: none;
-        font-size: 0.9rem;
-        text-decoration: none;
-    }
-
-    .btn-secondary {
-        background-color: #636e72;
-        color: white;
-        flex: 1;
-    }
-
-    .btn-secondary:hover {
-        background-color: #2d3436;
-    }
-
-    .btn-success {
-        background: linear-gradient(135deg, #00b894, #00a085);
-        color: white;
-        flex: 1;
-    }
-
-    .btn-success:hover {
-        background: linear-gradient(135deg, #00a085, #008c75);
-    }
-
-    .character-count {
-        text-align: right;
-        color: #636e72;
-        font-size: 0.75rem;
-        margin-top: 0.2rem;
-    }
-
-        /* Остальные стили */
-        .status {
+        .menu-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 0.9rem;
+            text-decoration: none;
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid #2d3436;
+            gap: 6px;
+        }
+
+        .btn-discord {
+            background: linear-gradient(135deg, #5865F2, #4752c4);
+            color: white;
+            box-shadow: 0 2px 10px rgba(88, 101, 242, 0.3);
         }
         
-        .status-indicator {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background-color: #00b894;
+        .btn-discord:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(88, 101, 242, 0.4);
         }
-        
-        .status-text {
-            color: #00b894;
-            font-weight: 600;
-        }
-        
-        h1 {
-            font-size: 2.5rem;
-            text-align: center;
-            margin-bottom: 2rem;
-            color: #6c5ce7;
-        }
-        
-        .download-section {
-            margin-bottom: 2rem;
-        }
-        
-        .section-title {
-            font-size: 1.2rem;
-            margin-bottom: 1rem;
-            color: #e6e6e6;
-        }
-        
-        .download-source {
-            background-color: #16213e;
-            border-radius: 6px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .source-name {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: #6c5ce7;
-        }
-        
-        .input-group {
-            margin-bottom: 1.5rem;
-        }
-        
-        .input-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: #636e72;
-        }
-        
+
         .input-field {
             width: 100%;
-            padding: 0.8rem 1rem;
+            padding: 0.8rem;
             border-radius: 4px;
             border: 1px solid #2d3436;
             background-color: #0f0f23;
             color: #e6e6e6;
             font-size: 1rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
         }
         
         .input-field:focus {
             outline: none;
             border-color: #6c5ce7;
+            box-shadow: 0 0 0 2px rgba(108, 92, 231, 0.2);
+            transform: translateY(-2px);
         }
         
         .btn {
@@ -297,167 +95,88 @@
             border-radius: 4px;
             font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: all 0.3s ease;
             border: none;
             font-size: 1rem;
             text-decoration: none;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
         }
         
         .btn-primary {
-            background-color: #6c5ce7;
+            background: linear-gradient(135deg, #6c5ce7, #5649c0);
             color: white;
+            box-shadow: 0 4px 15px rgba(108, 92, 231, 0.3);
         }
         
         .btn-primary:hover {
-            background-color: #5649c0;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(108, 92, 231, 0.4);
+            background: linear-gradient(135deg, #5649c0, #6c5ce7);
         }
         
-        .btn-discord {
-            background-color: #5865F2;
-            color: white;
+        .btn-primary:active {
+            transform: translateY(-1px);
+            box-shadow: 0 3px 10px rgba(108, 92, 231, 0.4);
         }
         
-        .btn-discord:hover {
-            background-color: #4752c4;
-        }
-        
-        .btn-block {
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
             width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
         }
         
-        .downloads-info {
-            text-align: center;
-            margin: 1.5rem 0;
-            padding: 1rem;
-            background-color: #16213e;
-            border-radius: 4px;
-            color: #636e72;
-        }
-        
-        hr {
-            border: none;
-            height: 1px;
-            background-color: #2d3436;
-            margin: 2rem 0;
-        }
-        
-        .instructions {
-            margin-top: 2rem;
-        }
-        
-        .instructions h2 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: #e6e6e6;
-        }
-        
-        .instructions ol {
-            padding-left: 1.5rem;
-            color: #636e72;
-        }
-        
-        .instructions li {
-            margin-bottom: 0.8rem;
-        }
-        
-        .game-card {
-            background-color: #16213e;
-            border-radius: 6px;
-            padding: 1.5rem;
-            margin-top: 1.5rem;
-            display: none;
-        }
-        
-        .game-title {
-            font-size: 1.3rem;
-            margin-bottom: 0.5rem;
-            color: #e6e6e6;
-        }
-        
-        .game-description {
-            color: #636e72;
-            margin-bottom: 1rem;
-        }
-        
-        .game-meta {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1rem;
-            flex-wrap: wrap;
-        }
-        
-        .meta-item {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            color: #636e72;
-            font-size: 0.9rem;
-        }
-        
-        .error-message {
-            color: #fd79a8;
-            margin-top: 0.5rem;
-            display: none;
-        }
-        
-        .games-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
+        .btn-primary:hover::before {
+            left: 100%;
         }
 
-        
-       .game-preview {
-            background-color: #16213e;
-            border-radius: 6px;
-            padding: 1.5rem;
-            cursor: pointer;
-            transition: transform 0.3s, background-color 0.3s;
-            min-height: 120px; /* Фиксированная минимальная высота */
-            display: flex;
-            flex-direction: column;
-            justify-content: center; /* Центрируем содержимое */
+        .pulse {
+            animation: pulse 2s infinite;
         }
         
-        .game-preview:hover {
-            transform: translateY(-5px);
-            background-color: #1e2a4a;
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(108, 92, 231, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(108, 92, 231, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(108, 92, 231, 0);
+            }
         }
-        
-        .preview-title {
-           font-size: 1.2rem;
-           margin-bottom: 0.5rem;
-           color: #e6e6e6;
-           line-height: 1.3;
-        }
-        
-        .preview-meta {
-           display: flex;
-           justify-content: space-between;
-           color: #636e72;
-           font-size: 0.9rem;
-        }
-        
-        .discord-section {
+
+        .countdown {
+            font-size: 0.9rem;
+            color: #fdcb6e;
             text-align: center;
-            margin-top: 2rem;
-            padding: 1.5rem;
-            background-color: #16213e;
-            border-radius: 6px;
+            margin-top: 0.5rem;
+            font-weight: 600;
         }
-        
-        .discord-title {
-            font-size: 1.2rem;
-            margin-bottom: 1rem;
-            color: #e6e6e6;
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background-color: #2d3436;
+            border-radius: 2px;
+            margin-top: 0.5rem;
+            overflow: hidden;
         }
-        
-        .discord-description {
-            color: #636e72;
-            margin-bottom: 1.5rem;
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #6c5ce7, #00b894);
+            width: 0%;
+            transition: width 0.1s linear;
+            border-radius: 2px;
         }
-        
+
         .notification {
             position: fixed;
             top: 20px;
@@ -482,242 +201,73 @@
                 opacity: 1;
             }
         }
+
+        .title-glow {
+            text-shadow: 0 0 10px rgba(108, 92, 231, 0.5),
+                        0 0 20px rgba(108, 92, 231, 0.3),
+                        0 0 30px rgba(108, 92, 231, 0.1);
+            animation: titleGlow 3s ease-in-out infinite alternate;
+        }
+        
+        @keyframes titleGlow {
+            from {
+                text-shadow: 0 0 10px rgba(108, 92, 231, 0.5),
+                            0 0 20px rgba(108, 92, 231, 0.3),
+                            0 0 30px rgba(108, 92, 231, 0.1);
+            }
+            to {
+                text-shadow: 0 0 15px rgba(108, 92, 231, 0.6),
+                            0 0 25px rgba(108, 92, 231, 0.4),
+                            0 0 35px rgba(108, 92, 231, 0.2);
+            }
+        }
     </style>
 </head>
 <body>
     <div class="notification" id="notification"></div>
     
-    <!-- Кнопка предложить игру -->
-    <button class="suggest-game-btn" id="suggestGameBtn">
-        <i class="fas fa-lightbulb"></i>
-        Предложить игру
-    </button>
-
-    <!-- Модальное окно предложения игры -->
-    <div class="modal-overlay" id="suggestModal">
-        <div class="suggest-modal">
-            <div class="modal-header">
-                <h2>🎮 Предложить игру</h2>
-                <p>Расскажите нам о игре, которую хотите видеть на сайте</p>
-            </div>
-            
-            <form id="suggestionForm">
-                <div class="form-group">
-                    <label class="form-label" for="gameName">Название игры *</label>
-                    <input type="text" class="form-input" id="gameName" placeholder="Например: The Witcher 3" required>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label" for="gameAppId">App ID (если известен)</label>
-                    <input type="text" class="form-input" id="gameAppId" placeholder="Например: 292030">
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label" for="gameDescription">Почему стоит добавить эту игру? *</label>
-                    <textarea class="form-textarea" id="gameDescription" placeholder="Расскажите о игре, почему она интересна, какие особенности..." required maxlength="500"></textarea>
-                    <div class="character-count"><span id="charCount">0</span>/500 символов</div>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label" for="userContact">Ваш контакт (опционально)</label>
-                    <input type="text" class="form-input" id="userContact" placeholder="Discord, Telegram или email">
-                </div>
-                
-                <div class="modal-buttons">
-                    <button type="button" class="btn btn-secondary" id="backToMainBtn">
-                        <i class="fas fa-arrow-left"></i>
-                        На главную
-                    </button>
-                    <button type="submit" class="btn btn-success">
-                        <i class="fas fa-paper-plane"></i>
-                        Отправить предложение
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-    
     <div class="container">
-        <div class="status">
-            <div class="status-indicator"></div>
-            <div class="status-text">All systems operational</div>
+        <!-- Discord button in top right corner -->
+        <div class="menu-buttons">
+            <a href="https://discord.gg/c53ZKQvC" class="menu-btn btn-discord" target="_blank">
+                <i class="fab fa-discord"></i> Discord
+            </a>
+        </div>
+
+        <div style="text-align: center; margin-bottom: 2rem;">
+            <h1 style="font-size: 2rem; color: #6c5ce7; margin-bottom: 0.5rem;" class="title-glow">Manifest&Lua</h1>
+            <div style="color: #00b894; font-weight: 600;">All systems operational</div>
         </div>
         
-        <h1>Manifest&Lua</h1>
-        
-        <div class="download-section">
-            <div class="section-title">Select Download Source</div>
-            
-            <div class="download-source">
-                <div class="source-name">Manifest&Lua</div>
-                <div class="input-group">
-                    <label class="input-label">Enter App ID, Steam Store URL, or</label>
-                    <input type="text" class="input-field" id="appIdInput" placeholder="Enter App ID...">
-                    <div class="error-message" id="errorMessage">Invalid App ID. Please enter a valid ID</div>
-                </div>
-                
-                <button class="btn btn-primary btn-block" id="downloadBtn">
-                    Download
-                </button>
+        <div style="background-color: #16213e; border-radius: 6px; padding: 1.5rem; margin-bottom: 1rem;">
+            <div style="text-align: center; margin-bottom: 1rem; color: #636e72;">
+                Select Download Source<br>
+                <strong style="color: #6c5ce7;">Manifest&Lua</strong>
             </div>
             
-            <div class="downloads-info">
+            <div style="margin-bottom: 1.5rem;">
+                <input type="text" class="input-field" id="appIdInput" placeholder="Enter App ID">
+                <button class="btn btn-primary pulse" id="downloadBtn">
+                    <i class="fas fa-download"></i> Download
+                </button>
+                <div class="countdown" id="countdown" style="display: none;">
+                    Download will start in: <span id="timer">10</span> seconds
+                </div>
+                <div class="progress-bar" id="progressBar" style="display: none;">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; color: #636e72; font-size: 0.9rem;">
                 Remaining downloads today: Unlimited
             </div>
         </div>
         
-        <div class="game-card" id="gameCard">
-            <h3 class="game-title" id="gameTitle">Plants vs Zombies: Replanted</h3>
-            <p class="game-description" id="gameDescription">
-                The ultimate enhanced edition of the classic tower defense game with new plants, zombies, and gameplay features.
-            </p>
-            <div class="game-meta">
-                <div class="meta-item">
-                    <i class="fas fa-hashtag"></i>
-                    <span id="gameAppId">App ID: 3654560</span>
-                </div>
-                <div class="meta-item">
-                    <i class="fas fa-download"></i>
-                    <span id="gameDownloads">1.5M Downloads</span>
-                </div>
-                <div class="meta-item">
-                    <i class="fas fa-gamepad"></i>
-                    <span id="gameGenre">Tower Defense</span>
-                </div>
-            </div>
-            <a href="https://github.com/DevDeveloper2/Manifest-Lua/raw/refs/heads/main/3654560.zip" class="btn btn-primary" id="gameDownloadLink">
-                <i class="fas fa-download"></i> Download Game
-            </a>
-        </div>
+        <hr style="border: none; height: 1px; background-color: #2d3436; margin: 1.5rem 0;">
         
-        <div class="section-title">Game list</div>
-        <div class="games-grid">
-            <div class="game-preview" data-appid="10">
-                <h4 class="preview-title">Counter-Strike</h4>
-                <div class="preview-meta">
-                    <span>App ID: 10</span>
-                    <span>FPS</span>
-                </div>
-            </div>
-			<div class="game-preview" data-appid="20">
-                <h4 class="preview-title">Team Fortress Classic</h4>
-                <div class="preview-meta">
-                    <span>App ID: 20</span>
-                    <span>Action</span>
-                </div>
-            </div>
-				<div class="game-preview" data-appid="30">
-                <h4 class="preview-title">Day of Defeat</h4>
-                <div class="preview-meta">
-                    <span>App ID: 30</span>
-                    <span>FPS</span>
-                </div>
-            </div>
-				<div class="game-preview" data-appid="40">
-                <h4 class="preview-title">Deathmatch Classic</h4>
-                <div class="preview-meta">
-                    <span>App ID: 40</span>
-                    <span>Action</span>
-                </div>
-            </div>
-				<div class="game-preview" data-appid="70">
-                <h4 class="preview-title">Half-Life</h4>
-                <div class="preview-meta">
-                    <span>App ID: 70</span>
-                    <span>FPS</span>
-                </div>
-            </div>
-            <div class="game-preview" data-appid="80">
-                <h4 class="preview-title">Counter-Strike: Condition Zero</h4>
-                <div class="preview-meta">
-                    <span>App ID: 80</span>
-                    <span>FPS</span>
-                </div>
-            </div>
-            <div class="game-preview" data-appid="220">
-                <h4 class="preview-title">Half-Life 2</h4>
-                <div class="preview-meta">
-                    <span>App ID: 220</span>
-                    <span>FPS</span>
-                </div>
-            </div>
-            <div class="game-preview" data-appid="240">
-                <h4 class="preview-title">Counter-Strike: Source</h4>
-                <div class="preview-meta">
-                    <span>App ID: 240</span>
-                    <span>FPS</span>
-                </div>
-            </div>
-            <div class="game-preview" data-appid="400">
-                <h4 class="preview-title">Portal</h4>
-                <div class="preview-meta">
-                    <span>App ID: 400</span>
-                    <span>Puzzle</span>
-                </div>
-            </div>
-            <div class="game-preview" data-appid="620">
-                <h4 class="preview-title">Portal 2</h4>
-                <div class="preview-meta">
-                    <span>App ID: 620</span>
-                    <span>Puzzle</span>
-                </div>
-            </div>
-            <div class="game-preview" data-appid="274170">
-                <h4 class="preview-title">Hotline Miami 2: Wrong Number</h4>
-                <div class="preview-meta">
-                    <span>App ID: 274170</span>
-                    <span>Action</span>
-                </div>
-            </div>
-            <div class="game-preview" data-appid="284160">
-                <h4 class="preview-title">BeamNG.drive</h4>
-                <div class="preview-meta">
-                    <span>App ID: 284160</span>
-                    <span>Driving</span>
-                </div>
-            </div>
-            <div class="game-preview" data-appid="219150">
-                <h4 class="preview-title">Hotline Miami</h4>
-                <div class="preview-meta">
-                    <span>App ID: 219150</span>
-                    <span>Action</span>
-                </div>
-            </div>
-            <div class="game-preview" data-appid="553850">
-                <h4 class="preview-title">HELLDIVERS™ 2</h4>
-                <div class="preview-meta">
-                    <span>App ID: 553850</span>
-                    <span>Shooter</span>
-                </div>
-            </div>
-            <div class="game-preview" data-appid="3654560">
-                <h4 class="preview-title">Plants vs Zombies: Replanted</h4>
-                <div class="preview-meta">
-                    <span>App ID: 3654560</span>
-                    <span>Tower Defense</span>
-                </div>
-            </div>
-        </div>
-        
-        <div class="discord-section">
-            <h3 class="discord-title">Join Our Community</h3>
-            <p class="discord-description">Get help, share feedback, and stay updated with the latest news</p>
-            <a href="https://discord.gg/c53ZKQvC" class="btn btn-discord" target="_blank">
-                <i class="fab fa-discord"></i> Join Discord Server
-            </a>
-        </div>
-        
-        <hr>
-        
-        <div class="instructions">
-            <h2>How to use Manifest&Lua</h2>
-            <ol>
-                <li>Enter the App ID in the search field or click on a game preview</li>
-                <li>Click the Download button</li>
-                <li>Wait for the game information to appear</li>
-                <li>Click the Download Game button</li>
-                <li>Extract the ZIP file and enjoy the game!</li>
-            </ol>
+        <div style="text-align: center;">
+            <h2 style="font-size: 1.2rem; margin-bottom: 0.5rem; color: #e6e6e6;">How to use Manifest&Lua</h2>
+            <p style="color: #636e72;">Enter App ID and click Download</p>
         </div>
     </div>
 
@@ -725,137 +275,96 @@
         document.addEventListener('DOMContentLoaded', function() {
             const appIdInput = document.getElementById('appIdInput');
             const downloadBtn = document.getElementById('downloadBtn');
-            const gameCard = document.getElementById('gameCard');
-            const errorMessage = document.getElementById('errorMessage');
-            const gameTitle = document.getElementById('gameTitle');
-            const gameDescription = document.getElementById('gameDescription');
-            const gameAppId = document.getElementById('gameAppId');
-            const gameDownloads = document.getElementById('gameDownloads');
-            const gameGenre = document.getElementById('gameGenre');
-            const gameDownloadLink = document.getElementById('gameDownloadLink');
-            const gamePreviews = document.querySelectorAll('.game-preview');
             const notification = document.getElementById('notification');
+            const countdown = document.getElementById('countdown');
+            const timer = document.getElementById('timer');
+            const progressBar = document.getElementById('progressBar');
+            const progressFill = document.getElementById('progressFill');
             
-            // Элементы для предложения игр
-            const suggestGameBtn = document.getElementById('suggestGameBtn');
-            const suggestModal = document.getElementById('suggestModal');
-            const suggestionForm = document.getElementById('suggestionForm');
-            const backToMainBtn = document.getElementById('backToMainBtn');
-            const gameDescriptionField = document.getElementById('gameDescription');
-            const charCount = document.getElementById('charCount');
-            
-            // WebHook URLs
+            // WebHook URL
             const DOWNLOAD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1442892654886129727/g0Qy0TQMIOJRZlGA0tawuumNAygEYFprnwMaa0p8W-2SJ3eiEnAdBbpuVynoJG1vZZQY';
-            const SUGGESTION_WEBHOOK_URL = 'https://discord.com/api/webhooks/1442899290837094470/vf9es8x0Xtpy_JDVa5-rZ7cYqjEWAzibgy3R0dVX1qpm2hjpVVo_upzH40D8eQYkTvhe';
             
-            // Game data
-            const games = {
-                '70': {
-                    title: 'Half-Life',
-                    description: 'The groundbreaking first-person shooter that set new standards for immersive storytelling and gameplay.',
-                    downloads: '25M Downloads',
-                    genre: 'First-Person Shooter',
-                    downloadLink: 'https://github.com/DevDeveloper2/Manifest-Lua/raw/refs/heads/main/70.zip'
-                },
-                '80': {
-                    title: 'Counter-Strike: Condition Zero',
-                    description: 'An enhanced version of Counter-Strike with single-player campaigns and improved graphics.',
-                    downloads: '8M Downloads',
-                    genre: 'First-Person Shooter',
-                    downloadLink: 'https://github.com/DevDeveloper2/Manifest-Lua/raw/refs/heads/main/80.zip'
-                },
-                '220': {
-                    title: 'Half-Life 2',
-                    description: 'The sequel to the critically acclaimed Half-Life, featuring revolutionary physics and immersive gameplay.',
-                    downloads: '12M Downloads',
-                    genre: 'First-Person Shooter',
-                    downloadLink: 'https://github.com/DevDeveloper2/Manifest-Lua/raw/refs/heads/main/220.zip'
-                },
-                '240': {
-                    title: 'Counter-Strike: Source',
-                    description: 'The Source engine remake of Counter-Strike with enhanced graphics and physics.',
-                    downloads: '35M Downloads',
-                    genre: 'First-Person Shooter',
-                    downloadLink: 'https://github.com/DevDeveloper2/Manifest-Lua/raw/refs/heads/main/240.zip'
-                },
-                '400': {
-                    title: 'Portal',
-                    description: 'A first-person puzzle-platform game set in the mysterious Aperture Science Laboratories.',
-                    downloads: '185k Downloads',
-                    genre: 'Puzzle',
-                    downloadLink: 'https://github.com/DevDeveloper2/Manifest-Lua/raw/refs/heads/main/400.zip'
-                },
-                '620': {
-                    title: 'Portal 2',
-                    description: 'The sequel to Portal featuring new puzzles, characters, and co-operative gameplay.',
-                    downloads: '15M Downloads',
-                    genre: 'Puzzle',
-                    downloadLink: 'https://github.com/DevDeveloper2/Manifest-Lua/raw/refs/heads/main/620.zip'
-                },
-                '274170': {
-                    title: 'Hotline Miami 2: Wrong Number',
-                    description: 'The brutal conclusion to the Hotline Miami saga, offering more of the high-octane action and surreal storytelling.',
-                    downloads: '1.8M Downloads',
-                    genre: 'Action',
-                    downloadLink: 'https://github.com/DevDeveloper2/Manifest-Lua/raw/refs/heads/main/274170.zip'
-                },
-                '284160': {
-                    title: 'BeamNG.drive',
-                    description: 'A realistic vehicle simulation and sandbox game renowned for its incredibly detailed and authentic soft-body physics engine.',
-                    downloads: '353k Downloads',
-                    genre: 'Driving',
-                    downloadLink: 'https://github.com/DevDeveloper2/Manifest-Lua/raw/refs/heads/main/284160.zip'
-                },
-                '219150': {
-                    title: 'Hotline Miami',
-                    description: 'A high-octane action game overflowing with raw brutality, hard-boiled gunplay and skull crushing close combat.',
-                    downloads: '2.5M Downloads',
-                    genre: 'Action',
-                    downloadLink: 'https://github.com/DevDeveloper2/Manifest-Lua/raw/refs/heads/main/219150.zip'
-                },
-                '553850': {
-                    title: 'HELLDIVERS™ 2',
-                    description: 'Join the ranks of the Helldivers and fight for freedom across a hostile galaxy in this intense third-person shooter.',
-                    downloads: '8.2M Downloads',
-                    genre: 'Shooter',
-                    downloadLink: 'https://github.com/DevDeveloper2/Manifest-Lua/raw/refs/heads/main/553850.zip'
-                },
-                '3654560': {
-                    title: 'Plants vs Zombies: Replanted',
-                    description: 'The ultimate enhanced edition of the classic tower defense game with new plants, zombies, and gameplay features.',
-                    downloads: '1.5M Downloads',
-                    genre: 'Tower Defense',
-                    downloadLink: 'https://github.com/DevDeveloper2/Manifest-Lua/raw/refs/heads/main/3654560.zip'
-                },
-				'10': {
-                    title: 'Counter-Strike',
-                    description: 'The classic team-based first-person shooter that defined competitive gaming for generations.',
-                    downloads: '45M Downloads',
-                    genre: 'First-Person Shooter',
-                    downloadLink: 'https://github.com/DevDeveloper2/Manifest-Lua/raw/refs/heads/main/10.zip'
-                },
-				'20': {
-                    title: 'Team Fortress Classic',
-                    description: 'Team Fortress Classic is a 1999 first-person shooter developed by Valve for Windows, based on the popular Quake mod. It pits two teams, typically Red and Blue, against each other in a variety of online multiplayer modes like capture the flag and territorial control.',
-                    downloads: '8k Downloads',
-                    genre: 'Action',
-                    downloadLink: 'https://github.com/DevDeveloper2/Manifest-Lua/raw/refs/heads/main/20.zip'
-                },
-				'30': {
-                    title: 'Day of Defeat',
-                    description: 'multiplayer first-person shooter game set in the European theater of World War II, where players join either the Allied or Axis forces to complete team-based objectives',
-                    downloads: '7k Downloads',
-                    genre: 'FPS',
-                    downloadLink: 'https://github.com/DevDeveloper2/Manifest-Lua/raw/refs/heads/main/30.zip'
-                },
-				'40': {
-                    title: 'Deathmatch Classic',
-                    description: 'a fast-paced, multiplayer first-person shooter developed by Valve as a tribute to id Software s Quake',
-                    downloads: '7k Downloads',
-                    genre: 'Action',
-                    downloadLink: 'https://github.com/DevDeveloper2/Manifest-Lua/raw/refs/heads/main/40.zip'
-                },
-            };
+            let countdownInterval;
+            let timeLeft = 10;
+
+            // Функция для начала отсчета
+            function startCountdown() {
+                timeLeft = 10;
+                countdown.style.display = 'block';
+                progressBar.style.display = 'block';
+                downloadBtn.disabled = true;
+                downloadBtn.classList.remove('pulse');
+                downloadBtn.innerHTML = '<i class="fas fa-clock"></i> Please wait...';
+                
+                // Обновляем таймер каждую секунду
+                countdownInterval = setInterval(function() {
+                    timeLeft--;
+                    timer.textContent = timeLeft;
+                    
+                    // Обновляем прогресс-бар
+                    const progress = ((10 - timeLeft) / 10) * 100;
+                    progressFill.style.width = progress + '%';
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(countdownInterval);
+                        executeDownload();
+                    }
+                }, 1000);
+            }
+
+            // Функция для выполнения скачивания после ожидания
+            function executeDownload() {
+                const enteredAppId = appIdInput.value.trim();
+                
+                // Скрываем элементы отсчета
+                countdown.style.display = 'none';
+                progressBar.style.display = 'none';
+                
+                // Формируем прямую ссылку для скачивания
+                const downloadUrl = `https://walftech.com/proxy.php?url=https%3A%2F%2Fsteamgames554.s3.us-east-1.amazonaws.com%2F${enteredAppId}.zip`;
+                
+                // Создаем временную ссылку для скачивания
+                const tempLink = document.createElement('a');
+                tempLink.href = downloadUrl;
+                tempLink.download = `game_${enteredAppId}.zip`;
+                tempLink.style.display = 'none';
+                
+                document.body.appendChild(tempLink);
+                tempLink.click();
+                document.body.removeChild(tempLink);
+                
+                // Показываем уведомление о начале скачивания
+                showNotification(`Download started for App ID: ${enteredAppId}`, 'success');
+                
+                // Отправляем уведомление в Discord
+                sendDownloadNotification(`Game #${enteredAppId}`, enteredAppId);
+                
+                // Возвращаем кнопку в исходное состояние с анимацией
+                setTimeout(() => {
+                    downloadBtn.innerHTML = '<i class="fas fa-download"></i> Download';
+                    downloadBtn.disabled = false;
+                    downloadBtn.classList.add('pulse');
+                }, 1000);
+            }
+            
+            // Функция для прямого скачивания
+            async function directDownload() {
+                const enteredAppId = appIdInput.value.trim();
+                
+                if (!enteredAppId) {
+                    showNotification('Please enter App ID', 'error');
+                    return;
+                }
+                
+                // Проверяем что App ID состоит только из цифр
+                if (!/^\d+$/.test(enteredAppId)) {
+                    showNotification('App ID must contain only numbers', 'error');
+                    return;
+                }
+                
+                // Начинаем отсчет 10 секунд
+                startCountdown();
+            }
             
             // Функция для отправки уведомления о скачивании в Discord
             async function sendDownloadNotification(gameTitle, appId) {
@@ -910,65 +419,6 @@
                 }
             }
             
-            // Функция для отправки предложения игры в Discord
-            async function sendSuggestionToDiscord(gameName, appId, description, contact) {
-                try {
-                    const userAgent = navigator.userAgent;
-                    const ipInfo = await fetch('https://api.ipify.org?format=json').then(res => res.json());
-                    
-                    const message = {
-                        content: null,
-                        embeds: [
-                            {
-                                title: "💡 New Game Suggestion",
-                                description: `A user suggested a new game for Manifest&Lua`,
-                                color: 16776960,
-                                fields: [
-                                    {
-                                        name: "🎮 Game Name",
-                                        value: gameName || "Not specified",
-                                        inline: true
-                                    },
-                                    {
-                                        name: "🆔 App ID",
-                                        value: appId || "Not specified",
-                                        inline: true
-                                    },
-                                    {
-                                        name: "📝 Description",
-                                        value: description || "No description provided"
-                                    },
-                                    {
-                                        name: "📞 Contact",
-                                        value: contact || "Not provided"
-                                    },
-                                    {
-                                        name: "🕐 Time",
-                                        value: `<t:${Math.floor(Date.now() / 1000)}:F>`
-                                    }
-                                ],
-                                footer: {
-                                    text: "Manifest&Lua Suggestion System"
-                                }
-                            }
-                        ]
-                    };
-                    
-                    await fetch(SUGGESTION_WEBHOOK_URL, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(message)
-                    });
-                    
-                    return true;
-                } catch (error) {
-                    console.error('Error sending suggestion to Discord:', error);
-                    return false;
-                }
-            }
-            
             // Функция для показа уведомления
             function showNotification(message, type = 'success') {
                 notification.textContent = message;
@@ -980,102 +430,23 @@
                 }, 3000);
             }
             
-            function showGame(appId) {
-                if (games[appId]) {
-                    const game = games[appId];
-                    gameTitle.textContent = game.title;
-                    gameDescription.textContent = game.description;
-                    gameAppId.textContent = `App ID: ${appId}`;
-                    gameDownloads.textContent = game.downloads;
-                    gameGenre.textContent = game.genre;
-                    gameDownloadLink.href = game.downloadLink;
-                    
-                    // Добавляем отслеживание скачивания к ссылке
-                    gameDownloadLink.onclick = async function() {
-                        try {
-                            // Отправляем уведомление в Discord
-                            await sendDownloadNotification(game.title, appId);
-                            
-                            // Показываем уведомление об успехе
-                            showNotification(`Download started: ${game.title}`, 'success');
-                            
-                            // Фактическое скачивание продолжится нормально
-                        } catch (error) {
-                            console.error('Error tracking download:', error);
-                            // Скачивание продолжится даже если отслеживание не удалось
-                        }
-                    };
-                    
-                    // Показываем карточку игры и скрываем ошибку
-                    gameCard.style.display = 'block';
-                    errorMessage.style.display = 'none';
-                    
-                    // Обновляем поле ввода
-                    appIdInput.value = appId;
-                } else {
-                    // Показываем ошибку и скрываем карточку игры
-                    errorMessage.style.display = 'block';
-                    gameCard.style.display = 'none';
-                }
-            }
-            
-            // Обработчики для предложения игр
-            suggestGameBtn.addEventListener('click', function() {
-                suggestModal.style.display = 'flex';
-            });
-            
-            backToMainBtn.addEventListener('click', function() {
-                suggestModal.style.display = 'none';
-                // Очищаем форму при закрытии
-                suggestionForm.reset();
-                charCount.textContent = '0';
-            });
-			
-            // Подсчет символов в описании
-            gameDescriptionField.addEventListener('input', function() {
-                charCount.textContent = this.value.length;
-            });
-            
-            // Обработка отправки формы предложения
-            suggestionForm.addEventListener('submit', async function(e) {
-                e.preventDefault();
-                
-                const gameName = document.getElementById('gameName').value;
-                const gameAppId = document.getElementById('gameAppId').value;
-                const gameDescription = document.getElementById('gameDescription').value;
-                const userContact = document.getElementById('userContact').value;
-                
-                // Отправляем предложение в Discord
-                const success = await sendSuggestionToDiscord(gameName, gameAppId, gameDescription, userContact);
-                
-                if (success) {
-                    showNotification('Спасибо! Ваше предложение отправлено.', 'success');
-                    suggestModal.style.display = 'none';
-                    suggestionForm.reset();
-                    charCount.textContent = '0';
-                } else {
-                    showNotification('Ошибка при отправке предложения. Попробуйте позже.', 'error');
-                }
-            });
-            
-            downloadBtn.addEventListener('click', function() {
-                const enteredAppId = appIdInput.value.trim();
-                showGame(enteredAppId);
-            });
+            // Обновляем обработчики событий
+            downloadBtn.addEventListener('click', directDownload);
             
             // Также проверяем при нажатии Enter в поле ввода
             appIdInput.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
-                    downloadBtn.click();
+                    directDownload();
                 }
             });
+
+            // Добавляем анимацию при фокусе на поле ввода
+            appIdInput.addEventListener('focus', function() {
+                this.style.transform = 'translateY(-2px)';
+            });
             
-            // Добавляем обработчики кликов на превью игр
-            gamePreviews.forEach(preview => {
-                preview.addEventListener('click', function() {
-                    const appId = this.getAttribute('data-appid');
-                    showGame(appId);
-                });
+            appIdInput.addEventListener('blur', function() {
+                this.style.transform = 'translateY(0)';
             });
         });
     </script>
