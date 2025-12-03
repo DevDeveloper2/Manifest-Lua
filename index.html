@@ -34,27 +34,16 @@
             position: relative;
         }
 
-        .header-buttons {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 2rem;
-            padding: 0.5rem;
-            background: rgba(26, 26, 46, 0.8);
-            border-radius: 6px;
-            border: 1px solid #2d3436;
-        }
-
-        .btn-group {
+        .menu-buttons {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
             display: flex;
             gap: 0.5rem;
         }
 
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 0.6rem 1.2rem;
+        .menu-btn {
+            padding: 0.5rem 1rem;
             border-radius: 4px;
             font-weight: 600;
             cursor: pointer;
@@ -62,19 +51,9 @@
             border: none;
             font-size: 0.9rem;
             text-decoration: none;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-logout {
-            background: linear-gradient(135deg, #e74c3c, #c0392b);
-            color: white;
-            box-shadow: 0 2px 10px rgba(231, 76, 60, 0.3);
-        }
-
-        .btn-logout:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .btn-discord {
@@ -107,6 +86,24 @@
             transform: translateY(-2px);
         }
         
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 1rem;
+            text-decoration: none;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        
         .btn-primary {
             background: linear-gradient(135deg, #6c5ce7, #5649c0);
             color: white;
@@ -124,17 +121,6 @@
             box-shadow: 0 3px 10px rgba(108, 92, 231, 0.4);
         }
         
-        .btn-secondary {
-            background: linear-gradient(135deg, #2d3436, #1a1a2e);
-            color: #e6e6e6;
-            border: 1px solid #2d3436;
-        }
-        
-        .btn-secondary:hover {
-            background: linear-gradient(135deg, #1a1a2e, #2d3436);
-            transform: translateY(-2px);
-        }
-
         .btn-primary::before {
             content: '';
             position: absolute;
@@ -235,159 +221,17 @@
                             0 0 35px rgba(108, 92, 231, 0.2);
             }
         }
-
-        .auth-container {
-            display: none;
-        }
-
-        .download-container {
-            display: none;
-        }
-
-        .auth-switch {
-            text-align: center;
-            margin-top: 1rem;
-            color: #636e72;
-        }
-
-        .auth-switch a {
-            color: #6c5ce7;
-            text-decoration: none;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .auth-switch a:hover {
-            text-decoration: underline;
-        }
-
-        .user-info {
-            text-align: center;
-            margin-bottom: 1.5rem;
-            padding: 0.8rem;
-            background: linear-gradient(135deg, rgba(108, 92, 231, 0.1), rgba(0, 184, 148, 0.1));
-            border-radius: 6px;
-            border: 1px solid rgba(108, 92, 231, 0.2);
-        }
-
-        .user-info span {
-            color: #fdcb6e;
-            font-weight: 600;
-        }
-
-        .error-message {
-            color: #fd79a8;
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-            text-align: center;
-            display: none;
-        }
-
-        .success-message {
-            color: #00b894;
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-            text-align: center;
-            display: none;
-        }
-
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255,255,255,.3);
-            border-radius: 50%;
-            border-top-color: #6c5ce7;
-            animation: spin 1s ease-in-out infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
     </style>
 </head>
 <body>
     <div class="notification" id="notification"></div>
     
-    <div class="container" id="authContainer">
-        <div class="header-buttons">
-            <div class="btn-group">
-                <a href="https://discord.gg/c53ZKQvC" class="btn btn-discord" target="_blank">
-                    <i class="fab fa-discord"></i> Discord
-                </a>
-            </div>
-        </div>
-
-        <div style="text-align: center; margin-bottom: 2rem;">
-            <h1 style="font-size: 2rem; color: #6c5ce7; margin-bottom: 0.5rem;" class="title-glow">Manifest&Lua</h1>
-            <div style="color: #00b894; font-weight: 600;">Account Authentication</div>
-        </div>
-
-        <!-- Login Form -->
-        <div id="loginForm">
-            <div style="background-color: #16213e; border-radius: 6px; padding: 1.5rem; margin-bottom: 1rem;">
-                <h3 style="text-align: center; margin-bottom: 1.5rem; color: #e6e6e6;">Login</h3>
-                
-                <div class="error-message" id="loginError"></div>
-                <div class="success-message" id="loginSuccess"></div>
-                
-                <input type="email" class="input-field" id="loginEmail" placeholder="Email">
-                <input type="password" class="input-field" id="loginPassword" placeholder="Password">
-                
-                <button class="btn btn-primary" id="loginBtn">
-                    <i class="fas fa-sign-in-alt"></i> Login
-                </button>
-            </div>
-            
-            <div class="auth-switch">
-                Don't have an account? <a id="switchToRegister">Register here</a>
-            </div>
-        </div>
-
-        <!-- Register Form -->
-        <div id="registerForm" style="display: none;">
-            <div style="background-color: #16213e; border-radius: 6px; padding: 1.5rem; margin-bottom: 1rem;">
-                <h3 style="text-align: center; margin-bottom: 1.5rem; color: #e6e6e6;">Create Account</h3>
-                
-                <div class="error-message" id="registerError"></div>
-                <div class="success-message" id="registerSuccess"></div>
-                
-                <input type="text" class="input-field" id="registerName" placeholder="Full Name">
-                <div style="font-size: 0.8rem; color: #636e72; margin-bottom: 0.5rem; text-align: center;">
-                    Nickname must be unique across all users
-                </div>
-                <input type="email" class="input-field" id="registerEmail" placeholder="Email">
-                <input type="password" class="input-field" id="registerPassword" placeholder="Password (min. 6 characters)">
-                <input type="password" class="input-field" id="registerConfirmPassword" placeholder="Confirm Password">
-                
-                <button class="btn btn-primary" id="registerBtn">
-                    <i class="fas fa-user-plus"></i> Create Account
-                </button>
-            </div>
-            
-            <div class="auth-switch">
-                Already have an account? <a id="switchToLogin">Login here</a>
-            </div>
-        </div>
-    </div>
-
-    <div class="container" id="downloadContainer">
-        <!-- Header with buttons moved here -->
-        <div class="header-buttons">
-            <div class="btn-group">
-                <button class="btn btn-logout" id="logoutBtn">
-                    <i class="fas fa-sign-out-alt"></i> Logout
-                </button>
-                <a href="https://discord.gg/c53ZKQvC" class="btn btn-discord" target="_blank">
-                    <i class="fab fa-discord"></i> Discord
-                </a>
-            </div>
-        </div>
-
-        <!-- User information display -->
-        <div class="user-info">
-            Welcome back, <span id="userDisplayName">User</span>!<br>
-            <small style="color: #636e72; font-size: 0.8rem;">Email: <span id="userEmail"></span></small>
+    <div class="container">
+        <!-- Discord button in top right corner -->
+        <div class="menu-buttons">
+            <a href="https://discord.gg/c53ZKQvC" class="menu-btn btn-discord" target="_blank">
+                <i class="fab fa-discord"></i> Discord
+            </a>
         </div>
 
         <div style="text-align: center; margin-bottom: 2rem;">
@@ -415,7 +259,7 @@
             </div>
             
             <div style="text-align: center; color: #636e72; font-size: 0.9rem;">
-                Downloads today: <span id="downloadCount">0</span>
+                Remaining downloads today: Unlimited
             </div>
         </div>
         
@@ -428,271 +272,7 @@
     </div>
 
     <script>
-        // Server API Simulation
-        class ServerAPI {
-            constructor() {
-                this.BASE_URL = 'https://api.example.com'; // Replace with your actual API URL
-                this.TOKEN_KEY = 'auth_token';
-                this.USER_KEY = 'user_data';
-            }
-
-            // Mock database - In real implementation, this would be on your server
-            mockDatabase = {
-                users: [
-                    {
-                        id: 1,
-                        name: 'Demo User',
-                        nickname: 'demo_user',
-                        email: 'demo@example.com',
-                        password: 'demo123', // In real app, this would be hashed on server
-                        downloads: 5,
-                        createdAt: '2024-01-01T00:00:00.000Z'
-                    }
-                ]
-            };
-
-            // Simulate API delay
-            async simulateDelay() {
-                return new Promise(resolve => setTimeout(resolve, 500));
-            }
-
-            // Generate unique ID
-            generateId() {
-                return Date.now() + Math.floor(Math.random() * 1000);
-            }
-
-            // Check if nickname is unique
-            isNicknameUnique(nickname) {
-                return !this.mockDatabase.users.some(user => user.nickname === nickname);
-            }
-
-            // Check if email is unique
-            isEmailUnique(email) {
-                return !this.mockDatabase.users.some(user => user.email === email);
-            }
-
-            // Convert name to nickname (remove spaces, lowercase)
-            nameToNickname(name) {
-                return name.trim().toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '');
-            }
-
-            // Register user
-            async register(name, email, password) {
-                await this.simulateDelay();
-                
-                const nickname = this.nameToNickname(name);
-                
-                // Check if nickname is unique
-                if (!this.isNicknameUnique(nickname)) {
-                    throw new Error('Nickname already taken. Please choose a different name.');
-                }
-                
-                // Check if email is unique
-                if (!this.isEmailUnique(email)) {
-                    throw new Error('Email already registered.');
-                }
-
-                // Validate password
-                if (password.length < 6) {
-                    throw new Error('Password must be at least 6 characters.');
-                }
-
-                // Create new user
-                const newUser = {
-                    id: this.generateId(),
-                    name: name.trim(),
-                    nickname: nickname,
-                    email: email.toLowerCase().trim(),
-                    password: password, // In real app, hash this on server!
-                    downloads: 0,
-                    createdAt: new Date().toISOString()
-                };
-
-                this.mockDatabase.users.push(newUser);
-                
-                // Generate token (in real app, use JWT)
-                const token = btoa(JSON.stringify({
-                    userId: newUser.id,
-                    email: newUser.email,
-                    expires: Date.now() + (24 * 60 * 60 * 1000) // 24 hours
-                }));
-
-                return {
-                    success: true,
-                    token: token,
-                    user: {
-                        id: newUser.id,
-                        name: newUser.name,
-                        nickname: newUser.nickname,
-                        email: newUser.email,
-                        downloads: newUser.downloads
-                    }
-                };
-            }
-
-            // Login user
-            async login(email, password) {
-                await this.simulateDelay();
-
-                const user = this.mockDatabase.users.find(u => 
-                    u.email === email.toLowerCase().trim()
-                );
-
-                if (!user) {
-                    throw new Error('User not found.');
-                }
-
-                if (user.password !== password) {
-                    throw new Error('Invalid password.');
-                }
-
-                // Generate token (in real app, use JWT)
-                const token = btoa(JSON.stringify({
-                    userId: user.id,
-                    email: user.email,
-                    expires: Date.now() + (24 * 60 * 60 * 1000) // 24 hours
-                }));
-
-                return {
-                    success: true,
-                    token: token,
-                    user: {
-                        id: user.id,
-                        name: user.name,
-                        nickname: user.nickname,
-                        email: user.email,
-                        downloads: user.downloads
-                    }
-                };
-            }
-
-            // Get current user from token
-            async getCurrentUser() {
-                const token = localStorage.getItem(this.TOKEN_KEY);
-                if (!token) return null;
-
-                try {
-                    await this.simulateDelay();
-                    
-                    // In real app, verify token with server
-                    const tokenData = JSON.parse(atob(token));
-                    
-                    // Check if token is expired
-                    if (tokenData.expires < Date.now()) {
-                        this.logout();
-                        return null;
-                    }
-
-                    const user = this.mockDatabase.users.find(u => u.id === tokenData.userId);
-                    
-                    if (!user) {
-                        this.logout();
-                        return null;
-                    }
-
-                    return {
-                        id: user.id,
-                        name: user.name,
-                        nickname: user.nickname,
-                        email: user.email,
-                        downloads: user.downloads
-                    };
-                } catch (error) {
-                    this.logout();
-                    return null;
-                }
-            }
-
-            // Increment download count
-            async incrementDownloads() {
-                const token = localStorage.getItem(this.TOKEN_KEY);
-                if (!token) return null;
-
-                try {
-                    await this.simulateDelay();
-                    
-                    const tokenData = JSON.parse(atob(token));
-                    const user = this.mockDatabase.users.find(u => u.id === tokenData.userId);
-                    
-                    if (user) {
-                        user.downloads++;
-                        return user.downloads;
-                    }
-                    
-                    return null;
-                } catch (error) {
-                    console.error('Error updating download count:', error);
-                    return null;
-                }
-            }
-
-            // Save token to localStorage
-            saveToken(token) {
-                localStorage.setItem(this.TOKEN_KEY, token);
-            }
-
-            // Save user data to localStorage
-            saveUser(user) {
-                localStorage.setItem(this.USER_KEY, JSON.stringify(user));
-            }
-
-            // Get user from localStorage
-            getUser() {
-                const user = localStorage.getItem(this.USER_KEY);
-                return user ? JSON.parse(user) : null;
-            }
-
-            // Logout
-            logout() {
-                localStorage.removeItem(this.TOKEN_KEY);
-                localStorage.removeItem(this.USER_KEY);
-            }
-
-            // Check if user is authenticated
-            isAuthenticated() {
-                const token = localStorage.getItem(this.TOKEN_KEY);
-                if (!token) return false;
-
-                try {
-                    const tokenData = JSON.parse(atob(token));
-                    return tokenData.expires > Date.now();
-                } catch (error) {
-                    return false;
-                }
-            }
-        }
-
-        // Initialize server API
-        const api = new ServerAPI();
-
         document.addEventListener('DOMContentLoaded', function() {
-            // DOM Elements
-            const authContainer = document.getElementById('authContainer');
-            const downloadContainer = document.getElementById('downloadContainer');
-            
-            // Login elements
-            const loginForm = document.getElementById('loginForm');
-            const loginEmail = document.getElementById('loginEmail');
-            const loginPassword = document.getElementById('loginPassword');
-            const loginBtn = document.getElementById('loginBtn');
-            const loginError = document.getElementById('loginError');
-            const loginSuccess = document.getElementById('loginSuccess');
-            
-            // Register elements
-            const registerForm = document.getElementById('registerForm');
-            const registerName = document.getElementById('registerName');
-            const registerEmail = document.getElementById('registerEmail');
-            const registerPassword = document.getElementById('registerPassword');
-            const registerConfirmPassword = document.getElementById('registerConfirmPassword');
-            const registerBtn = document.getElementById('registerBtn');
-            const registerError = document.getElementById('registerError');
-            const registerSuccess = document.getElementById('registerSuccess');
-            
-            // Switch between forms
-            const switchToRegister = document.getElementById('switchToRegister');
-            const switchToLogin = document.getElementById('switchToLogin');
-            
-            // Download elements
             const appIdInput = document.getElementById('appIdInput');
             const downloadBtn = document.getElementById('downloadBtn');
             const notification = document.getElementById('notification');
@@ -700,10 +280,6 @@
             const timer = document.getElementById('timer');
             const progressBar = document.getElementById('progressBar');
             const progressFill = document.getElementById('progressFill');
-            const logoutBtn = document.getElementById('logoutBtn');
-            const userDisplayName = document.getElementById('userDisplayName');
-            const userEmail = document.getElementById('userEmail');
-            const downloadCount = document.getElementById('downloadCount');
             
             // WebHook URL
             const DOWNLOAD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1442892654886129727/g0Qy0TQMIOJRZlGA0tawuumNAygEYFprnwMaa0p8W-2SJ3eiEnAdBbpuVynoJG1vZZQY';
@@ -711,374 +287,138 @@
             let countdownInterval;
             let timeLeft = 10;
 
-            // Check if user is authenticated
-            checkAuthStatus();
-
-            // Event Listeners for authentication
-            switchToRegister.addEventListener('click', () => {
-                loginForm.style.display = 'none';
-                registerForm.style.display = 'block';
-                clearErrors();
-                clearSuccess();
-            });
-
-            switchToLogin.addEventListener('click', () => {
-                registerForm.style.display = 'none';
-                loginForm.style.display = 'block';
-                clearErrors();
-                clearSuccess();
-            });
-
-            loginBtn.addEventListener('click', handleLogin);
-            registerBtn.addEventListener('click', handleRegister);
-            logoutBtn.addEventListener('click', handleLogout);
-
-            // Check authentication status
-            async function checkAuthStatus() {
-                if (api.isAuthenticated()) {
-                    const user = await api.getCurrentUser();
-                    if (user) {
-                        showDownloadPage(user);
-                    } else {
-                        showAuthPage();
+            // Функция для начала отсчета
+            function startCountdown() {
+                timeLeft = 10;
+                countdown.style.display = 'block';
+                progressBar.style.display = 'block';
+                downloadBtn.disabled = true;
+                downloadBtn.classList.remove('pulse');
+                downloadBtn.innerHTML = '<i class="fas fa-clock"></i> Please wait...';
+                
+                // Обновляем таймер каждую секунду
+                countdownInterval = setInterval(function() {
+                    timeLeft--;
+                    timer.textContent = timeLeft;
+                    
+                    // Обновляем прогресс-бар
+                    const progress = ((10 - timeLeft) / 10) * 100;
+                    progressFill.style.width = progress + '%';
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(countdownInterval);
+                        executeDownload();
                     }
-                } else {
-                    showAuthPage();
-                }
+                }, 1000);
             }
 
-            // Login function
-            async function handleLogin() {
-                clearErrors();
-                clearSuccess();
-                showLoading(loginBtn, 'Logging in...');
+            // Функция для выполнения скачивания после ожидания
+            function executeDownload() {
+                const enteredAppId = appIdInput.value.trim();
                 
+                // Скрываем элементы отсчета
+                countdown.style.display = 'none';
+                progressBar.style.display = 'none';
+                
+                // Формируем прямую ссылку для скачивания
+                const downloadUrl = `https://walftech.com/proxy.php?url=https%3A%2F%2Fsteamgames554.s3.us-east-1.amazonaws.com%2F${enteredAppId}.zip`;
+                
+                // Создаем временную ссылку для скачивания
+                const tempLink = document.createElement('a');
+                tempLink.href = downloadUrl;
+                tempLink.download = `game_${enteredAppId}.zip`;
+                tempLink.style.display = 'none';
+                
+                document.body.appendChild(tempLink);
+                tempLink.click();
+                document.body.removeChild(tempLink);
+                
+                // Показываем уведомление о начале скачивания
+                showNotification(`Download started for App ID: ${enteredAppId}`, 'success');
+                
+                // Отправляем уведомление в Discord
+                sendDownloadNotification(`Game #${enteredAppId}`, enteredAppId);
+                
+                // Возвращаем кнопку в исходное состояние с анимацией
+                setTimeout(() => {
+                    downloadBtn.innerHTML = '<i class="fas fa-download"></i> Download';
+                    downloadBtn.disabled = false;
+                    downloadBtn.classList.add('pulse');
+                }, 1000);
+            }
+            
+            // Функция для прямого скачивания
+            async function directDownload() {
+                const enteredAppId = appIdInput.value.trim();
+                
+                if (!enteredAppId) {
+                    showNotification('Please enter App ID', 'error');
+                    return;
+                }
+                
+                // Проверяем что App ID состоит только из цифр
+                if (!/^\d+$/.test(enteredAppId)) {
+                    showNotification('App ID must contain only numbers', 'error');
+                    return;
+                }
+                
+                // Начинаем отсчет 10 секунд
+                startCountdown();
+            }
+            
+            // Функция для отправки уведомления о скачивании в Discord
+            async function sendDownloadNotification(gameTitle, appId) {
                 try {
-                    const email = loginEmail.value.trim();
-                    const password = loginPassword.value.trim();
+                    const userAgent = navigator.userAgent;
                     
-                    // Basic validation
-                    if (!email || !password) {
-                        showError(loginError, 'Please fill in all fields');
-                        removeLoading(loginBtn, '<i class="fas fa-sign-in-alt"></i> Login');
-                        return;
-                    }
-                    
-                    // API call to login
-                    const result = await api.login(email, password);
-                    
-                    if (result.success) {
-                        api.saveToken(result.token);
-                        api.saveUser(result.user);
-                        showSuccess(loginSuccess, 'Login successful!');
-                        setTimeout(() => {
-                            showDownloadPage(result.user);
-                        }, 1000);
-                    }
-                } catch (error) {
-                    showError(loginError, error.message);
-                    removeLoading(loginBtn, '<i class="fas fa-sign-in-alt"></i> Login');
-                }
-            }
-
-            // Register function
-            async function handleRegister() {
-                clearErrors();
-                clearSuccess();
-                showLoading(registerBtn, 'Creating account...');
-                
-                try {
-                    const name = registerName.value.trim();
-                    const email = registerEmail.value.trim();
-                    const password = registerPassword.value.trim();
-                    const confirmPassword = registerConfirmPassword.value.trim();
-                    
-                    // Basic validation
-                    if (!name || !email || !password || !confirmPassword) {
-                        showError(registerError, 'Please fill in all fields');
-                        removeLoading(registerBtn, '<i class="fas fa-user-plus"></i> Create Account');
-                        return;
-                    }
-                    
-                    if (password.length < 6) {
-                        showError(registerError, 'Password must be at least 6 characters');
-                        removeLoading(registerBtn, '<i class="fas fa-user-plus"></i> Create Account');
-                        return;
-                    }
-                    
-                    if (password !== confirmPassword) {
-                        showError(registerError, 'Passwords do not match');
-                        removeLoading(registerBtn, '<i class="fas fa-user-plus"></i> Create Account');
-                        return;
-                    }
-                    
-                    // Email validation
-                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                    if (!emailRegex.test(email)) {
-                        showError(registerError, 'Please enter a valid email address');
-                        removeLoading(registerBtn, '<i class="fas fa-user-plus"></i> Create Account');
-                        return;
-                    }
-                    
-                    // API call to register
-                    const result = await api.register(name, email, password);
-                    
-                    if (result.success) {
-                        api.saveToken(result.token);
-                        api.saveUser(result.user);
-                        showSuccess(registerSuccess, 'Account created successfully!');
-                        setTimeout(() => {
-                            showDownloadPage(result.user);
-                        }, 1000);
-                    }
-                } catch (error) {
-                    showError(registerError, error.message);
-                    removeLoading(registerBtn, '<i class="fas fa-user-plus"></i> Create Account');
-                }
-            }
-
-            // Logout function
-            function handleLogout() {
-                api.logout();
-                showNotification('Logged out successfully', 'success');
-                showAuthPage();
-                clearAuthForms();
-            }
-
-            // Show authentication page
-            function showAuthPage() {
-                authContainer.style.display = 'block';
-                downloadContainer.style.display = 'none';
-                clearAuthForms();
-            }
-
-            // Show download page
-            function showDownloadPage(user) {
-                authContainer.style.display = 'none';
-                downloadContainer.style.display = 'block';
-                userDisplayName.textContent = user.name;
-                userEmail.textContent = user.email;
-                downloadCount.textContent = user.downloads;
-                removeLoading(loginBtn, '<i class="fas fa-sign-in-alt"></i> Login');
-                removeLoading(registerBtn, '<i class="fas fa-user-plus"></i> Create Account');
-                
-                // Setup download functionality
-                setupDownloadFunctionality();
-            }
-
-            // Setup download functionality
-            function setupDownloadFunctionality() {
-                // Функция для начала отсчета
-                function startCountdown() {
-                    timeLeft = 10;
-                    countdown.style.display = 'block';
-                    progressBar.style.display = 'block';
-                    downloadBtn.disabled = true;
-                    downloadBtn.classList.remove('pulse');
-                    downloadBtn.innerHTML = '<i class="fas fa-clock"></i> Please wait...';
-                    
-                    // Обновляем таймер каждую секунду
-                    countdownInterval = setInterval(function() {
-                        timeLeft--;
-                        timer.textContent = timeLeft;
-                        
-                        // Обновляем прогресс-бар
-                        const progress = ((10 - timeLeft) / 10) * 100;
-                        progressFill.style.width = progress + '%';
-                        
-                        if (timeLeft <= 0) {
-                            clearInterval(countdownInterval);
-                            executeDownload();
-                        }
-                    }, 1000);
-                }
-
-                // Функция для выполнения скачивания после ожидания
-                async function executeDownload() {
-                    const enteredAppId = appIdInput.value.trim();
-                    
-                    // Скрываем элементы отсчета
-                    countdown.style.display = 'none';
-                    progressBar.style.display = 'none';
-                    
-                    // Формируем прямую ссылку для скачивания
-                    const downloadUrl = `https://walftech.com/proxy.php?url=https%3A%2F%2Fsteamgames554.s3.us-east-1.amazonaws.com%2F${enteredAppId}.zip`;
-                    
-                    // Создаем временную ссылку для скачивания
-                    const tempLink = document.createElement('a');
-                    tempLink.href = downloadUrl;
-                    tempLink.download = `game_${enteredAppId}.zip`;
-                    tempLink.style.display = 'none';
-                    
-                    document.body.appendChild(tempLink);
-                    tempLink.click();
-                    document.body.removeChild(tempLink);
-                    
-                    // Update download count
-                    const newCount = await api.incrementDownloads();
-                    if (newCount !== null) {
-                        downloadCount.textContent = newCount;
-                    }
-                    
-                    // Показываем уведомление о начале скачивания
-                    showNotification(`Download started for App ID: ${enteredAppId}`, 'success');
-                    
-                    // Отправляем уведомление в Discord
-                    sendDownloadNotification(`Game #${enteredAppId}`, enteredAppId);
-                    
-                    // Возвращаем кнопку в исходное состояние с анимацией
-                    setTimeout(() => {
-                        downloadBtn.innerHTML = '<i class="fas fa-download"></i> Download';
-                        downloadBtn.disabled = false;
-                        downloadBtn.classList.add('pulse');
-                    }, 1000);
-                }
-                
-                // Функция для прямого скачивания
-                async function directDownload() {
-                    const enteredAppId = appIdInput.value.trim();
-                    
-                    if (!enteredAppId) {
-                        showNotification('Please enter App ID', 'error');
-                        return;
-                    }
-                    
-                    // Проверяем что App ID состоит только из цифр
-                    if (!/^\d+$/.test(enteredAppId)) {
-                        showNotification('App ID must contain only numbers', 'error');
-                        return;
-                    }
-                    
-                    // Начинаем отсчет 10 секунд
-                    startCountdown();
-                }
-                
-                // Функция для отправки уведомления о скачивании в Discord
-                async function sendDownloadNotification(gameTitle, appId) {
-                    try {
-                        const user = api.getUser();
-                        const userAgent = navigator.userAgent;
-                        
-                        const message = {
-                            content: null,
-                            embeds: [
-                                {
-                                    title: "📥 New Download",
-                                    description: `A user has downloaded a game from Manifest&Lua`,
-                                    color: 5814783,
-                                    fields: [
-                                        {
-                                            name: "🎮 Game",
-                                            value: gameTitle,
-                                            inline: true
-                                        },
-                                        {
-                                            name: "🆔 App ID",
-                                            value: appId,
-                                            inline: true
-                                        },
-                                        {
-                                            name: "👤 User",
-                                            value: user ? `${user.name} (${user.nickname})\n${user.email}` : 'Guest',
-                                            inline: true
-                                        },
-                                        {
-                                            name: "📊 Total Downloads",
-                                            value: user ? user.downloads.toString() : '0',
-                                            inline: true
-                                        },
-                                        {
-                                            name: "🌐 User Agent",
-                                            value: `\`\`\`${userAgent.substring(0, 100)}...\`\`\``
-                                        },
-                                        {
-                                            name: "🕐 Time",
-                                            value: `<t:${Math.floor(Date.now() / 1000)}:F>`
-                                        }
-                                    ],
-                                    footer: {
-                                        text: "Manifest&Lua Download Tracker"
+                    const message = {
+                        content: null,
+                        embeds: [
+                            {
+                                title: "📥 New Download",
+                                description: `A user has downloaded a game from Manifest&Lua`,
+                                color: 5814783,
+                                fields: [
+                                    {
+                                        name: "🎮 Game",
+                                        value: gameTitle,
+                                        inline: true
+                                    },
+                                    {
+                                        name: "🆔 App ID",
+                                        value: appId,
+                                        inline: true
+                                    },
+                                    {
+                                        name: "🌐 User Agent",
+                                        value: `\`\`\`${userAgent.substring(0, 100)}...\`\`\``
+                                    },
+                                    {
+                                        name: "🕐 Time",
+                                        value: `<t:${Math.floor(Date.now() / 1000)}:F>`
                                     }
+                                ],
+                                footer: {
+                                    text: "Manifest&Lua Download Tracker"
                                 }
-                            ]
-                        };
-                        
-                        await fetch(DOWNLOAD_WEBHOOK_URL, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify(message)
-                        });
-                        
-                        console.log('Download notification sent to Discord');
-                    } catch (error) {
-                        console.error('Error sending notification to Discord:', error);
-                    }
+                            }
+                        ]
+                    };
+                    
+                    await fetch(DOWNLOAD_WEBHOOK_URL, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(message)
+                    });
+                    
+                    console.log('Download notification sent to Discord');
+                } catch (error) {
+                    console.error('Error sending notification to Discord:', error);
                 }
-                
-                // Обновляем обработчики событий
-                downloadBtn.addEventListener('click', directDownload);
-                
-                // Также проверяем при нажатии Enter в поле ввода
-                appIdInput.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        directDownload();
-                    }
-                });
-
-                // Добавляем анимацию при фокусе на поле ввода
-                appIdInput.addEventListener('focus', function() {
-                    this.style.transform = 'translateY(-2px)';
-                });
-                
-                appIdInput.addEventListener('blur', function() {
-                    this.style.transform = 'translateY(0)';
-                });
             }
-
-            // Helper functions
-            function showError(element, message) {
-                element.textContent = message;
-                element.style.display = 'block';
-            }
-
-            function showSuccess(element, message) {
-                element.textContent = message;
-                element.style.display = 'block';
-            }
-
-            function clearErrors() {
-                loginError.style.display = 'none';
-                registerError.style.display = 'none';
-            }
-
-            function clearSuccess() {
-                loginSuccess.style.display = 'none';
-                registerSuccess.style.display = 'none';
-            }
-
-            function clearAuthForms() {
-                loginEmail.value = '';
-                loginPassword.value = '';
-                registerName.value = '';
-                registerEmail.value = '';
-                registerPassword.value = '';
-                registerConfirmPassword.value = '';
-                clearErrors();
-                clearSuccess();
-            }
-
-            function showLoading(button, text) {
-                button.innerHTML = `<span class="loading"></span> ${text}`;
-                button.disabled = true;
-            }
-
-            function removeLoading(button, html) {
-                button.innerHTML = html;
-                button.disabled = false;
-            }
-
+            
             // Функция для показа уведомления
             function showNotification(message, type = 'success') {
                 notification.textContent = message;
@@ -1089,6 +429,25 @@
                     notification.style.display = 'none';
                 }, 3000);
             }
+            
+            // Обновляем обработчики событий
+            downloadBtn.addEventListener('click', directDownload);
+            
+            // Также проверяем при нажатии Enter в поле ввода
+            appIdInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    directDownload();
+                }
+            });
+
+            // Добавляем анимацию при фокусе на поле ввода
+            appIdInput.addEventListener('focus', function() {
+                this.style.transform = 'translateY(-2px)';
+            });
+            
+            appIdInput.addEventListener('blur', function() {
+                this.style.transform = 'translateY(0)';
+            });
         });
     </script>
     
