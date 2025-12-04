@@ -895,6 +895,8 @@ window.addEventListener('resize', () => {
         let currentAppId = '';
         let currentGameName = '';
         let currentGameImageUrl = '';
+		let searchTimeout;
+
 
         // Функция для проверки информации об игре
         async function checkGameInfo(appId) {
@@ -1252,6 +1254,7 @@ function fallbackDownload() {
                 showNotification('Пожалуйста, введите App ID', 'error');
                 return;
             }
+			
             
             if (!/^\d+$/.test(enteredAppId)) {
                 showNotification('App ID должен содержать только цифры', 'error');
@@ -1313,16 +1316,46 @@ function fallbackDownload() {
         
         // Автоматическая проверка информации при вводе App ID
         appIdInput.addEventListener('input', function() {
-            const appId = this.value.trim();
-            if (appId && /^\d+$/.test(appId)) {
-                checkGameInfo(appId);
-            } else {
-                gameInfoCard.style.display = 'none';
-                errorCard.classList.remove('show');
-                currentGameName = '';
-                currentGameImageUrl = null;
-            }
-        });
+    const appId = this.value.trim();
+    
+    // Очищаем предыдущий таймаут
+    clearTimeout(searchTimeout);
+    
+    // Если пустое поле
+    if (!appId) {
+        gameInfoCard.style.display = 'none';
+        errorCard.classList.remove('show');
+        loading.classList.remove('show');
+        return;
+    }
+    
+    // Проверяем формат App ID
+    if (!/^\d+$/.test(appId)) {
+        gameInfoCard.style.display = 'none';
+        errorCard.classList.add('show');
+        document.getElementById('errorMessage').textContent = 'App ID должен содержать только цифры';
+        loading.classList.remove('show');
+        return;
+    }
+    
+    // Проверяем, что App ID не однозначный (меньше 2 символов)
+    if (appId.length < 2) {
+        gameInfoCard.style.display = 'none';
+        errorCard.classList.remove('show');
+        loading.classList.remove('show');
+        return;
+    }
+    
+    // Показываем индикатор загрузки
+    loading.classList.add('show');
+    gameInfoCard.style.display = 'none';
+    errorCard.classList.remove('show');
+    
+    // Устанавливаем таймаут на 2 секунды
+    searchTimeout = setTimeout(() => {
+        checkGameInfo(appId);
+    }, 2000);
+});
         
         // Фокус на поле ввода при загрузке
         appIdInput.focus();
