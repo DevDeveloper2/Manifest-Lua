@@ -402,6 +402,46 @@
                 Осталось скачиваний сегодня: Неограниченно
             </div>
         </div>
+		
+	<!-- Добавь этот блок после поля ввода App ID, но перед кнопкой "Скачать" -->
+<div style="margin: 10px 0; padding: 10px; background: rgba(108, 92, 231, 0.1); border-radius: 5px; border-left: 3px solid #6c5ce7; font-size: 0.9rem;">
+    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 5px;">
+        <i class="fas fa-info-circle" style="color: #6c5ce7;"></i>
+        <strong style="color: #6c5ce7;">Как найти App ID:</strong>
+    </div>
+    <div style="margin: 10px 0; padding: 10px; background: rgba(108, 92, 231, 0.1); border-radius: 5px; border-left: 3px solid #6c5ce7; font-size: 0.9rem;">
+    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 5px;">
+        <i class="fas fa-info-circle" style="color: #6c5ce7;"></i>
+        <strong style="color: #6c5ce7;">Как найти App ID:</strong>
+    </div>
+    <div style="color: #b2bec3; line-height: 1.4;">
+        1. Перейди на 
+        <a href="https://steamdb.info" 
+           target="_blank" 
+           style="color: #00b894; 
+                  text-decoration: none;
+                  font-weight: 600;
+                  position: relative;
+                  padding-bottom: 2px;
+                  display: inline-block;">
+            SteamDB.info
+            <span style="position: absolute; 
+                         bottom: 0; 
+                         left: 0; 
+                         width: 0; 
+                         height: 2px; 
+                         background: #00b894; 
+                         transition: width 0.3s ease;
+                         border-radius: 1px;"></span>
+        </a>
+        <br>
+        2. Найди свою игру в поиске<br>
+        3. Скопируй App ID<br>
+        <div style="margin-top: 5px; font-size: 0.85rem; color: #636e72;">
+            <i class="fas fa-external-link-alt"></i> Важно:<strong> Не все игры из Steam находятся на сайте</strong>
+        </div>
+    </div>
+</div>
         
         <!-- Карточка информации об игре -->
         <div class="game-info-card" id="gameInfoCard">
@@ -431,16 +471,116 @@
                 Не удалось найти игру с таким App ID. Проверьте правильность ввода.
             </div>
         </div>
-        
-        <hr style="border: none; height: 1px; background-color: #2d3436; margin: 1.5rem 0;">
-        
-        <div style="text-align: center;">
-            <h2 style="font-size: 1.2rem; margin-bottom: 0.5rem; color: #e6e6e6;">Как использовать Manifest&Lua</h2>
-            <p style="color: #636e72;">Введите App ID и нажмите "Скачать"</p>
-        </div>
-    </div>
 
     <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const steamdbLinks = document.querySelectorAll('a[href="https://steamdb.info"]');
+    steamdbLinks.forEach(link => {
+        const underline = link.querySelector('span');
+        
+        link.addEventListener('mouseenter', function() {
+            underline.style.width = '100%';
+        });
+        
+        link.addEventListener('mouseleave', function() {
+            underline.style.width = '0';
+        });
+    });
+});
+
+
+// Добавь этот скрипт в <head> или перед закрывающим </body>
+document.addEventListener('DOMContentLoaded', function() {
+    // Создаем стили для красивого скроллбара
+    const scrollbarStyles = document.createElement('style');
+    scrollbarStyles.textContent = `
+        /* Стилизация скроллбара для всей страницы */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 5px;
+            border: 1px solid #2d3436;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #6c5ce7 0%, #5649c0 100%);
+            border-radius: 5px;
+            border: 2px solid transparent;
+            background-clip: padding-box;
+            transition: all 0.3s ease;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #5649c0 0%, #6c5ce7 100%);
+            box-shadow: 0 0 10px rgba(108, 92, 231, 0.5);
+        }
+        
+        ::-webkit-scrollbar-corner {
+            background: #1a1a2e;
+        }
+        
+        /* Стилизация скроллбара для элемента с описанием игры */
+        .game-description::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .game-description::-webkit-scrollbar-track {
+            background: rgba(27, 40, 56, 0.5);
+            border-radius: 3px;
+        }
+        
+        .game-description::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #00b894 0%, #00a085 100%);
+            border-radius: 3px;
+        }
+        
+        .game-description::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #00a085 0%, #00b894 100%);
+        }
+        
+        /* Стилизация для Firefox */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: #6c5ce7 #1a1a2e;
+        }
+        
+        /* Анимация появления скроллбара */
+        ::-webkit-scrollbar-thumb {
+            animation: scrollbarFadeIn 0.5s ease;
+        }
+        
+        @keyframes scrollbarFadeIn {
+            from { opacity: 0.5; }
+            to { opacity: 1; }
+        }
+        
+        /* Эффект при активном скролле */
+        .scrolling {
+            cursor: grabbing;
+        }
+    `;
+    
+    document.head.appendChild(scrollbarStyles);
+    
+    // Добавляем эффект при скролле
+    let isScrolling;
+    document.addEventListener('scroll', function() {
+        document.body.classList.add('scrolling');
+        
+        clearTimeout(isScrolling);
+        isScrolling = setTimeout(function() {
+            document.body.classList.remove('scrolling');
+        }, 150);
+    });
+});
+
+
+
+	
         document.addEventListener('DOMContentLoaded', function() {
             const appIdInput = document.getElementById('appIdInput');
             const downloadBtn = document.getElementById('downloadBtn');
@@ -469,134 +609,168 @@
             let currentGameImageUrl = '';
 
             // Функция для проверки информации об игре
-            async function checkGameInfo(appId) {
-                if (!appId) return;
-                
-                currentAppId = appId;
-                
-                // Скрываем предыдущие результаты
-                gameInfoCard.style.display = 'none';
-                errorCard.classList.remove('show');
-                loading.classList.add('show');
-                
-                try {
-                    // Используем CORS proxy для доступа к Steam API
-                    const proxyUrl = 'https://corsproxy.io/?';
-                    const apiUrl = `https://store.steampowered.com/api/appdetails?appids=${appId}&cc=us&l=english`;
-                    
-                    const response = await fetch(proxyUrl + encodeURIComponent(apiUrl));
-                    
-                    if (!response.ok) {
-                        throw new Error('Ошибка сети');
-                    }
-                    
-                    const data = await response.json();
-                    
-                    if (data && data[appId] && data[appId].success) {
-                        const gameData = data[appId].data;
-                        
-                        // Сохраняем название и картинку для Discord
-                        currentGameName = gameData.name || 'Неизвестная игра';
-                        currentGameImageUrl = gameData.header_image || null;
-                        
-                        // Обновляем информацию на карточке
-                        gameTitle.textContent = currentGameName;
-                        
-                        // Обновляем цену
-                        if (gameData.is_free) {
-                            gamePrice.textContent = 'Бесплатно';
-                        } else if (gameData.price_overview) {
-                            gamePrice.textContent = gameData.price_overview.final_formatted;
-                        } else {
-                            gamePrice.textContent = 'Цена не указана';
-                        }
-                        
-                        // Обновляем описание (удаляем HTML теги и обрезаем)
-                        let description = gameData.short_description || gameData.detailed_description || 'Описание отсутствует';
-                        // Удаляем HTML теги
-                        description = description.replace(/<[^>]*>/g, '');
-                        // Обрезаем до 200 символов
-                        if (description.length > 200) {
-                            description = description.substring(0, 200) + '...';
-                        }
-                        gameDescription.textContent = description;
-                        
-                        // Обновляем ссылку на Steam Store
-                        steamStoreLink.href = `https://store.steampowered.com/app/${appId}/`;
-                        
-                        // Загружаем изображение игры
-                        if (currentGameImageUrl) {
-                            imagePlaceholder.style.display = 'none';
-                            gameImage.style.display = 'block';
-                            gameImage.src = currentGameImageUrl;
-                            gameImage.alt = currentGameName;
-                            
-                            gameImage.onerror = function() {
-                                imagePlaceholder.style.display = 'flex';
-                                gameImage.style.display = 'none';
-                                imagePlaceholder.innerHTML = '<i class="fas fa-image"></i> Изображение не найдено';
-                                currentGameImageUrl = null;
-                            };
-                        } else {
-                            imagePlaceholder.innerHTML = '<i class="fas fa-image"></i> Изображение отсутствует';
-                            imagePlaceholder.style.display = 'flex';
-                            gameImage.style.display = 'none';
-                        }
-                        
-                        // Показываем карточку с информацией
-                        gameInfoCard.style.display = 'block';
-                        errorCard.classList.remove('show');
-                        
-                    } else {
-                        throw new Error('Игра не найдена');
-                    }
-                    
-                } catch (error) {
-                    console.error('Ошибка при получении информации об игре:', error);
-                    
-                    // Сбрасываем данные игры
-                    currentGameName = '';
-                    currentGameImageUrl = null;
-                    
-                    // Показываем карточку ошибки
-                    errorCard.classList.add('show');
-                    gameInfoCard.style.display = 'none';
-                    
-                    const errorMsg = document.getElementById('errorMessage');
-                    if (error.message === 'Игра не найдена') {
-                        errorMsg.textContent = 'Игра с таким App ID не найдена в Steam. Проверьте правильность ввода.';
-                    } else {
-                        errorMsg.textContent = 'Произошла ошибка при загрузке информации. Попробуйте еще раз.';
-                    }
-                    
-                } finally {
-                    loading.classList.remove('show');
-                }
+            // Функция для проверки информации об игре (ИСПРАВЛЕННАЯ ВЕРСИЯ ЦЕНЫ)
+async function checkGameInfo(appId) {
+    if (!appId) return;
+    
+    currentAppId = appId;
+    
+    // Скрываем предыдущие результаты
+    gameInfoCard.style.display = 'none';
+    errorCard.classList.remove('show');
+    loading.classList.add('show');
+    
+    try {
+        // Используем CORS proxy для доступа к Steam API
+        const proxyUrl = 'https://corsproxy.io/?';
+        // Используем русский язык и регион для корректных цен
+        const apiUrl = `https://store.steampowered.com/api/appdetails?appids=${appId}&l=russian&cc=ru`;
+        
+        const response = await fetch(proxyUrl + encodeURIComponent(apiUrl), {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
             }
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Ошибка сети: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        if (!data || !data[appId]) {
+            throw new Error('Некорректный ответ от Steam API');
+        }
+        
+        if (!data[appId].success) {
+            throw new Error('Игра не найдена или недоступна');
+        }
+        
+        const gameData = data[appId].data;
+        
+        // Сохраняем название и картинку для Discord
+        currentGameName = gameData.name || 'Неизвестная игра';
+        currentGameImageUrl = gameData.header_image || null;
+        
+        // Обновляем информацию на карточке
+        gameTitle.textContent = currentGameName;
+        
+        // ОБНОВЛЕНО: Корректное отображение цены
+        let priceText = 'Цена не указана';
+        
+        // Проверяем, бесплатная ли игра
+        if (gameData.is_free === true) {
+            priceText = 'Бесплатно';
+        } 
+        // Проверяем цену в формате для СНГ
+        else if (gameData.price_overview && gameData.price_overview.final_formatted) {
+            // Используем отформатированную цену
+            priceText = gameData.price_overview.final_formatted;
             
-            // Функция для начала отсчета
-            function startCountdown() {
-                timeLeft = 10;
-                countdown.style.display = 'block';
-                progressBar.style.display = 'block';
-                downloadBtn.disabled = true;
-                downloadBtn.classList.remove('pulse');
-                downloadBtn.innerHTML = '<i class="fas fa-clock"></i> Пожалуйста, подождите...';
+            // Если есть скидка, показываем старую и новую цену
+            if (gameData.price_overview.discount_percent > 0) {
+                const discount = gameData.price_overview.discount_percent;
+                const originalPrice = gameData.price_overview.initial_formatted;
+                const finalPrice = gameData.price_overview.final_formatted;
                 
-                countdownInterval = setInterval(function() {
-                    timeLeft--;
-                    timer.textContent = timeLeft;
-                    
-                    const progress = ((10 - timeLeft) / 10) * 100;
-                    progressFill.style.width = progress + '%';
-                    
-                    if (timeLeft <= 0) {
-                        clearInterval(countdownInterval);
-                        executeDownload();
-                    }
-                }, 1000);
+                priceText = `
+                    <div style="display: flex; flex-direction: column; gap: 3px;">
+                        <span style="text-decoration: line-through; color: #fd79a8; font-size: 0.8em;">
+                            ${originalPrice}
+                        </span>
+                        <span style="color: #00b894; font-weight: bold;">
+                            ${finalPrice}
+                        </span>
+                        <span style="background: linear-gradient(135deg, #fd79a8, #e84393); 
+                                   color: white; 
+                                   padding: 1px 6px; 
+                                   border-radius: 10px; 
+                                   font-size: 0.7em; 
+                                   display: inline-block; 
+                                   width: fit-content;">
+                            -${discount}%
+                        </span>
+                    </div>
+                `;
             }
-
+        }
+        // Проверяем цену в формате для западных регионов
+        else if (gameData.price_overview && gameData.price_overview.final) {
+            // Если есть только числовое значение, форматируем его
+            const price = gameData.price_overview.final / 100; // цена в копейках/центах
+            priceText = `${price.toFixed(2)} ₽`;
+        }
+        // Если игра еще не вышла
+        else if (gameData.release_date && gameData.release_date.coming_soon) {
+            priceText = 'Скоро в продаже';
+        }
+        // Если игра недоступна для покупки
+        else if (gameData.release_date && !gameData.release_date.coming_soon && !gameData.price_overview) {
+            priceText = 'Недоступно для покупки';
+        }
+        
+        // Обновляем элемент цены
+        gamePrice.innerHTML = priceText;
+        
+        // Обновляем описание (удаляем HTML теги и обрезаем)
+        let description = gameData.short_description || gameData.detailed_description || 'Описание отсутствует';
+        // Удаляем HTML теги
+        description = description.replace(/<[^>]*>/g, '');
+        gameDescription.textContent = description;
+        
+        // Обновляем ссылку на Steam Store
+        steamStoreLink.href = `https://store.steampowered.com/app/${appId}/`;
+        
+        // Загружаем изображение игры
+        if (currentGameImageUrl) {
+            imagePlaceholder.style.display = 'none';
+            gameImage.style.display = 'block';
+            gameImage.src = currentGameImageUrl;
+            gameImage.alt = currentGameName;
+            
+            gameImage.onerror = function() {
+                imagePlaceholder.style.display = 'flex';
+                gameImage.style.display = 'none';
+                imagePlaceholder.innerHTML = '<i class="fas fa-image"></i> Изображение не найдено';
+                currentGameImageUrl = null;
+            };
+        } else {
+            imagePlaceholder.innerHTML = '<i class="fas fa-image"></i> Изображение отсутствует';
+            imagePlaceholder.style.display = 'flex';
+            gameImage.style.display = 'none';
+        }
+        
+        // Показываем карточку с информацией
+        gameInfoCard.style.display = 'block';
+        errorCard.classList.remove('show');
+        
+    } catch (error) {
+        console.error('Ошибка при получении информации об игре:', error);
+        
+        // Сбрасываем данные игры
+        currentGameName = '';
+        currentGameImageUrl = null;
+        
+        // Показываем карточку ошибки
+        errorCard.classList.add('show');
+        gameInfoCard.style.display = 'none';
+        
+        const errorMsg = document.getElementById('errorMessage');
+        
+        if (error.message.includes('404')) {
+            errorMsg.textContent = 'Игра с таким App ID не найдена в Steam.';
+        } else if (error.message.includes('Сеть')) {
+            errorMsg.textContent = 'Проблемы с подключением к Steam. Проверьте интернет.';
+        } else {
+            errorMsg.textContent = 'Произошла ошибка. Попробуйте другой App ID.';
+        }
+        
+    } finally {
+        loading.classList.remove('show');
+    }
+}
             // Функция для отправки уведомления о скачивании в Discord
             async function sendDownloadNotification(appId, gameName, gameImageUrl) {
                 try {
@@ -810,4 +984,3 @@ appIdInput.addEventListener('input', function() {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
 </body>
 </html>
-
