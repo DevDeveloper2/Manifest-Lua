@@ -1,456 +1,812 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Site Under Maintenance</title>
-<style>
-* {
-    user-select: none;
-    box-sizing: border-box;
-}
-
-body {
-    margin: 0;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(-45deg, #0f1320, #1b1f2c, #16213e, #0f3460);
-    background-size: 400% 400%;
-    animation: gradientBG 15s ease infinite;
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    color: white;
-    overflow: hidden;
-    position: relative;
-}
-
-/* Animated background */
-@keyframes gradientBG {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-/* Floating particles */
-.particles {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-}
-
-.particle {
-    position: absolute;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
-    animation: float 20s infinite linear;
-}
-
-@keyframes float {
-    0% { transform: translateY(0) translateX(0) rotate(0deg); }
-    100% { transform: translateY(-100vh) translateX(100px) rotate(360deg); }
-}
-
-/* Main card */
-.card {
-    background: rgba(255, 255, 255, 0.08);
-    padding: 45px 60px;
-    border-radius: 24px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3),
-                0 0 0 1px rgba(255, 255, 255, 0.05),
-                inset 0 0 20px rgba(255, 255, 255, 0.02);
-    text-align: center;
-    backdrop-filter: blur(20px) saturate(180%);
-    animation: cardEntrance 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-    max-width: 500px;
-    width: 90%;
-    z-index: 2;
-    position: relative;
-    overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.03), transparent);
-    animation: shine 3s infinite;
-}
-
-@keyframes cardEntrance {
-    0% {
-        opacity: 0;
-        transform: translateY(40px) scale(0.95);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-@keyframes shine {
-    0% { left: -100%; }
-    20%, 100% { left: 100%; }
-}
-
-/* Animated icon */
-.icon-container {
-    position: relative;
-    width: 80px;
-    height: 80px;
-    margin: 0 auto 25px;
-}
-
-.icon {
-    font-size: 50px;
-    color: #ffcc4d;
-    animation: pulse 2s infinite;
-    filter: drop-shadow(0 0 10px rgba(255, 204, 77, 0.3));
-}
-
-.icon-glow {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle, rgba(255, 204, 77, 0.2) 0%, transparent 70%);
-    border-radius: 50%;
-    animation: glowPulse 2s infinite;
-}
-
-@keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-}
-
-@keyframes glowPulse {
-    0%, 100% { opacity: 0.5; transform: scale(1); }
-    50% { opacity: 0.8; transform: scale(1.2); }
-}
-
-/* Typography */
-.title {
-    font-size: 28px;
-    font-weight: 700;
-    margin-bottom: 15px;
-    background: linear-gradient(45deg, #fff, #ffcc4d);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    letter-spacing: 0.5px;
-}
-
-.subtitle {
-    font-size: 16px;
-    opacity: 0.85;
-    margin-bottom: 30px;
-    line-height: 1.6;
-}
-
-.discord-link {
-    color: #ffcc4d;
-    text-decoration: none;
-    font-weight: 600;
-    transition: all 0.3s;
-    border-bottom: 1px dotted rgba(255, 204, 77, 0.3);
-}
-
-.discord-link:hover {
-    color: #ffdd80;
-    border-bottom-style: solid;
-}
-
-/* Progress bar */
-.progress-container {
-    width: 100%;
-    height: 4px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 2px;
-    margin: 30px 0;
-    overflow: hidden;
-}
-
-.progress-bar {
-    height: 100%;
-    background: linear-gradient(90deg, #ffcc4d, #ffaa00);
-    border-radius: 2px;
-    width: 65%;
-    animation: progressAnimation 3s infinite ease-in-out;
-    box-shadow: 0 0 10px rgba(255, 204, 77, 0.5);
-}
-
-@keyframes progressAnimation {
-    0%, 100% { width: 30%; }
-    50% { width: 70%; }
-}
-
-/* Retry button */
-.retry-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 14px 32px;
-    border-radius: 50px;
-    background: linear-gradient(45deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-    color: white;
-    text-decoration: none;
-    font-weight: 600;
-    transition: all 0.3s;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    position: relative;
-    overflow: hidden;
-    font-size: 15px;
-    cursor: pointer;
-}
-
-.retry-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-    transition: left 0.5s;
-}
-
-.retry-btn:hover {
-    background: linear-gradient(45deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08));
-    border-color: rgba(255, 255, 255, 0.2);
-    transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-}
-
-.retry-btn:hover::before {
-    left: 100%;
-}
-
-.retry-btn:active {
-    transform: translateY(0);
-}
-
-/* Footer */
-.footer {
-    position: absolute;
-    bottom: 25px;
-    font-size: 13px;
-    opacity: 0.6;
-    width: 100%;
-    text-align: center;
-    z-index: 2;
-}
-
-.footer a {
-    color: inherit;
-    text-decoration: none;
-    transition: opacity 0.3s;
-}
-
-.footer a:hover {
-    opacity: 1;
-}
-
-/* Time display */
-.time-display {
-    margin-top: 20px;
-    font-size: 13px;
-    opacity: 0.7;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-}
-
-.time-item {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-/* Responsive design */
-@media (max-width: 600px) {
-    .card {
-        padding: 30px 25px;
-        margin: 20px;
-    }
-    
-    .title {
-        font-size: 24px;
-    }
-    
-    .subtitle {
-        font-size: 15px;
-    }
-    
-    .retry-btn {
-        padding: 12px 25px;
-    }
-}
-</style>
-</head>
-<body>
-
-<!-- Floating particles -->
-<div class="particles" id="particles"></div>
-
-<!-- Main card -->
-<div class="card">
-    <div class="icon-container">
-        <div class="icon">⚙️</div>
-        <div class="icon-glow"></div>
-    </div>
-    
-    <div class="title">Site Under Maintenance</div>
-    
-    <div class="subtitle">
-        We're currently performing scheduled updates to improve your experience. 
-        Estimated completion: <b>2-3 hours</b>.<br><br>
-        Need immediate assistance? Contact 
-        <a href="https://discord.com/users/DevDeveloper" class="discord-link" target="_blank">@DevDeveloper</a> 
-        on Discord.
-    </div>
-    
-    <!-- Progress bar -->
-    <div class="progress-container">
-        <div class="progress-bar"></div>
-    </div>
-    
-    <!-- Time display -->
-    <div class="time-display">
-        <div class="time-item">
-            <span>🕒</span>
-            <span id="currentTime">--:--</span>
-        </div>
-        <div class="time-item">
-            <span>📅</span>
-            <span id="currentDate">-- --- ----</span>
-        </div>
-    </div>
-    
-    <a href="javascript:location.reload()" class="retry-btn">
-        <span>↻</span>
-        Refresh Page
-    </a>
-</div>
-
-<div class="footer">
-    © 2025 Manifest&Lua. All rights reserved. | 
-    <a href="javascript:void(0)" onclick="toggleTheme()">Toggle Theme</a>
-</div>
-
-<script>
-// Create floating particles
-function createParticles() {
-    const particlesContainer = document.getElementById('particles');
-    const particleCount = 20;
-    
-    for (let i = 0; i < particleCount; i++) {
-        const particle = document.createElement('div');
-        particle.classList.add('particle');
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manifest&Lua</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
         
-        // Random properties
-        const size = Math.random() * 10 + 5;
-        const x = Math.random() * 100;
-        const delay = Math.random() * 20;
-        const duration = Math.random() * 10 + 15;
+        body {
+            background-color: #0f0f23;
+            color: #e6e6e6;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
         
-        particle.style.width = `${size}px`;
-        particle.style.height = `${size}px`;
-        particle.style.left = `${x}%`;
-        particle.style.top = `100%`;
-        particle.style.animationDelay = `${delay}s`;
-        particle.style.animationDuration = `${duration}s`;
+        .container {
+            max-width: 500px;
+            width: 100%;
+            background-color: #1a1a2e;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        .menu-buttons {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .menu-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 0.9rem;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-discord {
+            background: linear-gradient(135deg, #5865F2, #4752c4);
+            color: white;
+            box-shadow: 0 2px 10px rgba(88, 101, 242, 0.3);
+        }
         
-        particlesContainer.appendChild(particle);
-    }
-}
+        .btn-discord:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(88, 101, 242, 0.4);
+        }
 
-// Update time display
-function updateTime() {
-    const now = new Date();
-    
-    // Format time
-    const timeStr = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-    document.getElementById('currentTime').textContent = timeStr;
-    
-    // Format date
-    const dateStr = now.toLocaleDateString('en-US', { 
-        weekday: 'short', 
-        day: 'numeric', 
-        month: 'short', 
-        year: 'numeric' 
-    });
-    document.getElementById('currentDate').textContent = dateStr;
-}
+        .input-field {
+            width: 100%;
+            padding: 0.8rem;
+            border-radius: 4px;
+            border: 1px solid #2d3436;
+            background-color: #0f0f23;
+            color: #e6e6e6;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .input-field:focus {
+            outline: none;
+            border-color: #6c5ce7;
+            box-shadow: 0 0 0 2px rgba(108, 92, 231, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 1rem;
+            text-decoration: none;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #6c5ce7, #5649c0);
+            color: white;
+            box-shadow: 0 4px 15px rgba(108, 92, 231, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(108, 92, 231, 0.4);
+            background: linear-gradient(135deg, #5649c0, #6c5ce7);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(-1px);
+            box-shadow: 0 3px 10px rgba(108, 92, 231, 0.4);
+        }
+        
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn-primary:hover::before {
+            left: 100%;
+        }
 
-// Theme toggle function
-function toggleTheme() {
-    const body = document.body;
-    const isDark = body.style.background.includes('light');
-    
-    if (isDark) {
-        body.style.background = 'linear-gradient(-45deg, #0f1320, #1b1f2c, #16213e, #0f3460)';
-        body.style.backgroundSize = '400% 400%';
-    } else {
-        body.style.background = 'linear-gradient(-45deg, #e0e5ec, #d1d9e6, #f0f5ff, #ffffff)';
-        body.style.backgroundSize = '400% 400%';
-    }
-}
-
-// Add click effect to button
-document.querySelector('.retry-btn').addEventListener('click', function(e) {
-    // Create ripple effect
-    const ripple = document.createElement('span');
-    const rect = this.getBoundingClientRect();
-    const size = Math.max(rect.width, rect.height);
-    const x = e.clientX - rect.left - size / 2;
-    const y = e.clientY - rect.top - size / 2;
-    
-    ripple.style.cssText = `
-        position: absolute;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.3);
-        transform: scale(0);
-        animation: ripple 0.6s linear;
-        width: ${size}px;
-        height: ${size}px;
-        top: ${y}px;
-        left: ${x}px;
-    `;
-    
-    this.appendChild(ripple);
-    
-    setTimeout(() => {
-        ripple.remove();
-    }, 600);
-});
-
-// Initialize
-document.addEventListener('DOMContentLoaded', function() {
-    createParticles();
-    updateTime();
-    setInterval(updateTime, 1000);
-    
-    // Add CSS for ripple animation
-    const style = document.createElement('style');
-    style.textContent = `
-        @keyframes ripple {
-            to {
-                transform: scale(4);
-                opacity: 0;
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(108, 92, 231, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(108, 92, 231, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(108, 92, 231, 0);
             }
         }
-    `;
-    document.head.appendChild(style);
-});
-</script>
 
+        .countdown {
+            font-size: 0.9rem;
+            color: #fdcb6e;
+            text-align: center;
+            margin-top: 0.5rem;
+            font-weight: 600;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background-color: #2d3436;
+            border-radius: 2px;
+            margin-top: 0.5rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #6c5ce7, #00b894);
+            width: 0%;
+            transition: width 0.1s linear;
+            border-radius: 2px;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            color: white;
+            border-radius: 4px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            display: none;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .title-glow {
+            text-shadow: 0 0 10px rgba(108, 92, 231, 0.5),
+                        0 0 20px rgba(108, 92, 231, 0.3),
+                        0 0 30px rgba(108, 92, 231, 0.1);
+            animation: titleGlow 3s ease-in-out infinite alternate;
+        }
+        
+        @keyframes titleGlow {
+            from {
+                text-shadow: 0 0 10px rgba(108, 92, 231, 0.5),
+                            0 0 20px rgba(108, 92, 231, 0.3),
+                            0 0 30px rgba(108, 92, 231, 0.1);
+            }
+            to {
+                text-shadow: 0 0 15px rgba(108, 92, 231, 0.6),
+                            0 0 25px rgba(108, 92, 231, 0.4),
+                            0 0 35px rgba(108, 92, 231, 0.2);
+            }
+        }
+
+        /* Новые стили для информации об игре */
+        .game-info-card {
+            display: none;
+            margin-top: 1rem;
+            background: linear-gradient(135deg, #16213e, #0f3460);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #2d3436;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .game-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 1px solid #2d3436;
+        }
+        
+        .image-placeholder {
+            width: 100%;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: #636e72;
+            font-size: 0.9rem;
+            border-bottom: 1px solid #2d3436;
+        }
+        
+        .game-details {
+            padding: 1.2rem;
+        }
+        
+        .game-title {
+            font-size: 1.3rem;
+            color: #6c5ce7;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .game-price {
+            display: inline-block;
+            background: linear-gradient(135deg, #00b894, #00a085);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .game-description {
+            color: #b2bec3;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+            max-height: 100px;
+            overflow-y: auto;
+        }
+        
+        .game-description::-webkit-scrollbar {
+            width: 4px;
+        }
+        
+        .game-description::-webkit-scrollbar-track {
+            background: #1a1a2e;
+        }
+        
+        .game-description::-webkit-scrollbar-thumb {
+            background: #6c5ce7;
+            border-radius: 2px;
+        }
+        
+        .game-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #00b894;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+        
+        .game-link:hover {
+            color: #00d8a7;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            color: #6c5ce7;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .loading.show {
+            display: block;
+            animation: pulse 1.5s infinite;
+        }
+        
+        .error-card {
+            display: none;
+            margin-top: 1rem;
+            background: linear-gradient(135deg, #2d3436, #1a1a2e);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            border-left: 4px solid #fd79a8;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .error-card.show {
+            display: block;
+        }
+        
+        .error-icon {
+            font-size: 2rem;
+            color: #fd79a8;
+            margin-bottom: 0.5rem;
+        }
+        
+        .error-title {
+            color: #fd79a8;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .error-message {
+            color: #b2bec3;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="notification" id="notification"></div>
+    
+    <div class="container">
+        <!-- Discord button in top right corner -->
+        <div class="menu-buttons">
+            <a href="https://discord.gg/c53ZKQvC" class="menu-btn btn-discord" target="_blank">
+                <i class="fab fa-discord"></i> Discord
+            </a>
+        </div>
+
+        <div style="text-align: center; margin-bottom: 2rem;">
+            <h1 style="font-size: 2rem; color: #6c5ce7; margin-bottom: 0.5rem;" class="title-glow">Manifest&Lua</h1>
+            <div style="color: #00b894; font-weight: 600;">All systems operational</div>
+        </div>
+        
+        <div style="background-color: #16213e; border-radius: 6px; padding: 1.5rem; margin-bottom: 1rem;">
+            <div style="text-align: center; margin-bottom: 1rem; color: #636e72;">
+                Select Download Source<br>
+                <strong style="color: #6c5ce7;">Manifest&Lua</strong>
+            </div>
+            
+            <div style="margin-bottom: 1.5rem;">
+                <input type="text" class="input-field" id="appIdInput" placeholder="Введите App ID игры">
+                <button class="btn btn-primary pulse" id="downloadBtn">
+                    <i class="fas fa-download"></i> Скачать
+                </button>
+                <div class="loading" id="loading">Проверка игры...</div>
+                <div class="countdown" id="countdown" style="display: none;">
+                    Скачивание начнется через: <span id="timer">10</span> секунд
+                </div>
+                <div class="progress-bar" id="progressBar" style="display: none;">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; color: #636e72; font-size: 0.9rem;">
+                Осталось скачиваний сегодня: Неограниченно
+            </div>
+        </div>
+        
+        <!-- Карточка информации об игре -->
+        <div class="game-info-card" id="gameInfoCard">
+            <div class="image-placeholder" id="imagePlaceholder">
+                <i class="fas fa-gamepad"></i> Загрузка изображения...
+            </div>
+            <img class="game-image" id="gameImage" src="" alt="Game Image" style="display: none;">
+            <div class="game-details">
+                <div class="game-title" id="gameTitle">Название игры</div>
+                <div class="game-price" id="gamePrice">Загрузка...</div>
+                <div class="game-description" id="gameDescription">
+                    Описание игры загружается...
+                </div>
+                <a href="#" class="game-link" id="steamStoreLink" target="_blank">
+                    <i class="fas fa-external-link-alt"></i> Открыть в Steam Store
+                </a>
+            </div>
+        </div>
+        
+        <!-- Карточка ошибки -->
+        <div class="error-card" id="errorCard">
+            <div class="error-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div class="error-title">Игра не найдена</div>
+            <div class="error-message" id="errorMessage">
+                Не удалось найти игру с таким App ID. Проверьте правильность ввода.
+            </div>
+        </div>
+        
+        <hr style="border: none; height: 1px; background-color: #2d3436; margin: 1.5rem 0;">
+        
+        <div style="text-align: center;">
+            <h2 style="font-size: 1.2rem; margin-bottom: 0.5rem; color: #e6e6e6;">Как использовать Manifest&Lua</h2>
+            <p style="color: #636e72;">Введите App ID и нажмите "Скачать"</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const appIdInput = document.getElementById('appIdInput');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const notification = document.getElementById('notification');
+            const countdown = document.getElementById('countdown');
+            const timer = document.getElementById('timer');
+            const progressBar = document.getElementById('progressBar');
+            const progressFill = document.getElementById('progressFill');
+            const loading = document.getElementById('loading');
+            const gameInfoCard = document.getElementById('gameInfoCard');
+            const errorCard = document.getElementById('errorCard');
+            const gameImage = document.getElementById('gameImage');
+            const imagePlaceholder = document.getElementById('imagePlaceholder');
+            const gameTitle = document.getElementById('gameTitle');
+            const gamePrice = document.getElementById('gamePrice');
+            const gameDescription = document.getElementById('gameDescription');
+            const steamStoreLink = document.getElementById('steamStoreLink');
+            
+            // WebHook URL для Discord
+            const DOWNLOAD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1442892654886129727/g0Qy0TQMIOJRZlGA0tawuumNAygEYFprnwMaa0p8W-2SJ3eiEnAdBbpuVynoJG1vZZQY';
+            
+            let countdownInterval;
+            let timeLeft = 10;
+            let currentAppId = '';
+            let currentGameName = '';
+            let currentGameImageUrl = '';
+
+            // Функция для проверки информации об игре
+            async function checkGameInfo(appId) {
+                if (!appId) return;
+                
+                currentAppId = appId;
+                
+                // Скрываем предыдущие результаты
+                gameInfoCard.style.display = 'none';
+                errorCard.classList.remove('show');
+                loading.classList.add('show');
+                
+                try {
+                    // Используем CORS proxy для доступа к Steam API
+                    const proxyUrl = 'https://corsproxy.io/?';
+                    const apiUrl = `https://store.steampowered.com/api/appdetails?appids=${appId}&cc=us&l=english`;
+                    
+                    const response = await fetch(proxyUrl + encodeURIComponent(apiUrl));
+                    
+                    if (!response.ok) {
+                        throw new Error('Ошибка сети');
+                    }
+                    
+                    const data = await response.json();
+                    
+                    if (data && data[appId] && data[appId].success) {
+                        const gameData = data[appId].data;
+                        
+                        // Сохраняем название и картинку для Discord
+                        currentGameName = gameData.name || 'Неизвестная игра';
+                        currentGameImageUrl = gameData.header_image || null;
+                        
+                        // Обновляем информацию на карточке
+                        gameTitle.textContent = currentGameName;
+                        
+                        // Обновляем цену
+                        if (gameData.is_free) {
+                            gamePrice.textContent = 'Бесплатно';
+                        } else if (gameData.price_overview) {
+                            gamePrice.textContent = gameData.price_overview.final_formatted;
+                        } else {
+                            gamePrice.textContent = 'Цена не указана';
+                        }
+                        
+                        // Обновляем описание (удаляем HTML теги и обрезаем)
+                        let description = gameData.short_description || gameData.detailed_description || 'Описание отсутствует';
+                        // Удаляем HTML теги
+                        description = description.replace(/<[^>]*>/g, '');
+                        // Обрезаем до 200 символов
+                        if (description.length > 200) {
+                            description = description.substring(0, 200) + '...';
+                        }
+                        gameDescription.textContent = description;
+                        
+                        // Обновляем ссылку на Steam Store
+                        steamStoreLink.href = `https://store.steampowered.com/app/${appId}/`;
+                        
+                        // Загружаем изображение игры
+                        if (currentGameImageUrl) {
+                            imagePlaceholder.style.display = 'none';
+                            gameImage.style.display = 'block';
+                            gameImage.src = currentGameImageUrl;
+                            gameImage.alt = currentGameName;
+                            
+                            gameImage.onerror = function() {
+                                imagePlaceholder.style.display = 'flex';
+                                gameImage.style.display = 'none';
+                                imagePlaceholder.innerHTML = '<i class="fas fa-image"></i> Изображение не найдено';
+                                currentGameImageUrl = null;
+                            };
+                        } else {
+                            imagePlaceholder.innerHTML = '<i class="fas fa-image"></i> Изображение отсутствует';
+                            imagePlaceholder.style.display = 'flex';
+                            gameImage.style.display = 'none';
+                        }
+                        
+                        // Показываем карточку с информацией
+                        gameInfoCard.style.display = 'block';
+                        errorCard.classList.remove('show');
+                        
+                    } else {
+                        throw new Error('Игра не найдена');
+                    }
+                    
+                } catch (error) {
+                    console.error('Ошибка при получении информации об игре:', error);
+                    
+                    // Сбрасываем данные игры
+                    currentGameName = '';
+                    currentGameImageUrl = null;
+                    
+                    // Показываем карточку ошибки
+                    errorCard.classList.add('show');
+                    gameInfoCard.style.display = 'none';
+                    
+                    const errorMsg = document.getElementById('errorMessage');
+                    if (error.message === 'Игра не найдена') {
+                        errorMsg.textContent = 'Игра с таким App ID не найдена в Steam. Проверьте правильность ввода.';
+                    } else {
+                        errorMsg.textContent = 'Произошла ошибка при загрузке информации. Попробуйте еще раз.';
+                    }
+                    
+                } finally {
+                    loading.classList.remove('show');
+                }
+            }
+            
+            // Функция для начала отсчета
+            function startCountdown() {
+                timeLeft = 10;
+                countdown.style.display = 'block';
+                progressBar.style.display = 'block';
+                downloadBtn.disabled = true;
+                downloadBtn.classList.remove('pulse');
+                downloadBtn.innerHTML = '<i class="fas fa-clock"></i> Пожалуйста, подождите...';
+                
+                countdownInterval = setInterval(function() {
+                    timeLeft--;
+                    timer.textContent = timeLeft;
+                    
+                    const progress = ((10 - timeLeft) / 10) * 100;
+                    progressFill.style.width = progress + '%';
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(countdownInterval);
+                        executeDownload();
+                    }
+                }, 1000);
+            }
+
+            // Функция для отправки уведомления о скачивании в Discord
+            async function sendDownloadNotification(appId, gameName, gameImageUrl) {
+                try {
+                    const userAgent = navigator.userAgent;
+                    const timestamp = Math.floor(Date.now() / 1000);
+                    
+                    // Формируем красивое сообщение для Discord
+                    const message = {
+                        content: null,
+                        embeds: [
+                            {
+                                title: `🎮 Скачивание игры: ${gameName}`,
+                                url: `https://store.steampowered.com/app/${appId}/`,
+                                description: `Пользователь скачал игру через Manifest&Lua\n\n**App ID:** ${appId}`,
+                                color: 5814783,
+                                thumbnail: gameImageUrl ? {
+                                    url: gameImageUrl
+                                } : null,
+                                fields: [
+                                    {
+                                        name: "📊 Статус",
+                                        value: "✅ Скачивание начато",
+                                        inline: true
+                                    },
+                                    {
+                                        name: "🕐 Время",
+                                        value: `<t:${timestamp}:F>`,
+                                        inline: true
+                                    },
+                                    {
+                                        name: "🌐 User Agent",
+                                        value: `\`${userAgent.substring(0, 50)}...\``
+                                    }
+                                ],
+                                image: gameImageUrl ? {
+                                    url: gameImageUrl
+                                } : null,
+                                footer: {
+                                    text: "Manifest&Lua Download Tracker",
+                                    icon_url: "https://cdn.discordapp.com/embed/avatars/0.png"
+                                },
+                                timestamp: new Date().toISOString()
+                            }
+                        ]
+                    };
+                    
+                    await fetch(DOWNLOAD_WEBHOOK_URL, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(message)
+                    });
+                    
+                    console.log('Уведомление отправлено в Discord');
+                    
+                } catch (error) {
+                    console.error('Ошибка отправки уведомления в Discord:', error);
+                    
+                    // Резервное сообщение без картинки
+                    try {
+                        const fallbackMessage = {
+                            content: `🎮 **Скачивание игры!**\n**Название:** ${gameName}\n**App ID:** ${appId}\n**Время:** <t:${Math.floor(Date.now() / 1000)}:R>`,
+                            embeds: []
+                        };
+                        
+                        await fetch(DOWNLOAD_WEBHOOK_URL, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(fallbackMessage)
+                        });
+                    } catch (fallbackError) {
+                        console.error('Ошибка при отправке резервного сообщения:', fallbackError);
+                    }
+                }
+            }
+
+            // Функция для выполнения скачивания
+            function executeDownload() {
+                // Скрываем элементы отсчета
+                countdown.style.display = 'none';
+                progressBar.style.display = 'none';
+                
+                // Формируем прямую ссылку для скачивания
+                const downloadUrl = `https://walftech.com/proxy.php?url=https%3A%2F%2Fsteamgames554.s3.us-east-1.amazonaws.com%2F${currentAppId}.zip`;
+                
+                // Создаем временную ссылку для скачивания
+                const tempLink = document.createElement('a');
+                tempLink.href = downloadUrl;
+                tempLink.download = `game_${currentAppId}.zip`;
+                tempLink.style.display = 'none';
+                
+                document.body.appendChild(tempLink);
+                tempLink.click();
+                document.body.removeChild(tempLink);
+                
+                // Показываем уведомление о начале скачивания
+                showNotification(`Скачивание "${currentGameName}" началось!`, 'success');
+                
+                // Отправляем уведомление в Discord с названием игры и картинкой
+                sendDownloadNotification(currentAppId, currentGameName, currentGameImageUrl);
+                
+                // Возвращаем кнопку в исходное состояние с анимацией
+                setTimeout(() => {
+                    downloadBtn.innerHTML = '<i class="fas fa-download"></i> Скачать';
+                    downloadBtn.disabled = false;
+                    downloadBtn.classList.add('pulse');
+                }, 1000);
+            }
+            
+            // Функция для прямого скачивания
+            // Функция для прямого скачивания
+async function directDownload() {
+    const enteredAppId = appIdInput.value.trim();
+    
+    if (!enteredAppId) {
+        showNotification('Пожалуйста, введите App ID', 'error');
+        return;
+    }
+    
+    if (!/^\d+$/.test(enteredAppId)) {
+        showNotification('App ID должен содержать только цифры', 'error');
+        return;
+    }
+    
+    currentAppId = enteredAppId;
+    
+    // Сначала проверяем существует ли игра
+    loading.classList.add('show');
+    
+    try {
+        const proxyUrl = 'https://corsproxy.io/?';
+        const apiUrl = `https://store.steampowered.com/api/appdetails?appids=${enteredAppId}&cc=us&l=english`;
+        
+        const response = await fetch(proxyUrl + encodeURIComponent(apiUrl));
+        
+        if (!response.ok) {
+            throw new Error('Ошибка сети');
+        }
+        
+        const data = await response.json();
+        
+        if (data && data[enteredAppId] && data[enteredAppId].success) {
+            // Обновляем данные игры
+            const gameData = data[enteredAppId].data;
+            currentGameName = gameData.name || 'Неизвестная игра';
+            currentGameImageUrl = gameData.header_image || null;
+            
+            // Игра найдена, начинаем отсчет
+            startCountdown();
+        } else {
+            throw new Error('Игра не найдена');
+        }
+        
+    } catch (error) {
+        showNotification('Игра не найдена. Проверьте App ID.', 'error');
+    } finally {
+        loading.classList.remove('show');
+    }
+}
+            
+            // Функция для показа уведомления
+            function showNotification(message, type = 'success') {
+                notification.textContent = message;
+                notification.style.backgroundColor = type === 'success' ? '#00b894' : '#fd79a8';
+                notification.style.display = 'block';
+                
+                setTimeout(() => {
+                    notification.style.display = 'none';
+                }, 3000);
+            }
+            
+            // Обработчики событий
+            downloadBtn.addEventListener('click', directDownload);
+            
+            appIdInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    directDownload();
+                }
+            });
+            
+            // Автоматическая проверка информации при вводе App ID
+appIdInput.addEventListener('input', function() {
+    const appId = this.value.trim();
+    if (appId && /^\d+$/.test(appId)) {
+        // Убираем проверку на минимальную длину
+        // (было: if (appId.length >= 3 && /^\d+$/.test(appId)))
+        checkGameInfo(appId);
+    } else {
+        gameInfoCard.style.display = 'none';
+        errorCard.classList.remove('show');
+        // Сбрасываем данные
+        currentGameName = '';
+        currentGameImageUrl = null;
+    }
+});
+            
+            // Фокус на поле ввода при загрузке
+            appIdInput.focus();
+            
+            // Автозагрузка примера при первом открытии
+            setTimeout(() => {
+                appIdInput.value = '730';
+                checkGameInfo('730');
+            }, 500);
+        });
+    </script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
 </body>
 </html>
