@@ -2,17 +2,19 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <link rel="icon" href="favicon.ico" type="image/x-icon>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manifest&Lua</title>
+	<link rel="icon"
+	href="favicon.png" type="image/png">
     <style>
-        * {
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-        
+	
+	* {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+	
         * {
             margin: 0;
             padding: 0;
@@ -21,7 +23,7 @@
         }
         
         /* Реалистичный анимированный фон */
-        body {
+           body {
             background-color: #0f0f23;
             color: #e6e6e6;
             line-height: 1.6;
@@ -31,163 +33,154 @@
             align-items: center;
             justify-content: center;
             padding: 1rem;
-            overflow-x: hidden;
         }
-        
+		
         /* Звездная пыль */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
-            background: 
-                radial-gradient(circle at 20% 30%, 
-                    rgba(255, 255, 255, 0.05) 0%, 
-                    transparent 40%
-                ),
-                radial-gradient(circle at 70% 60%, 
-                    rgba(255, 255, 255, 0.03) 0%, 
-                    transparent 40%
-                ),
-                radial-gradient(circle at 90% 10%, 
-                    rgba(255, 255, 255, 0.04) 0%, 
-                    transparent 35%
-                ),
-                radial-gradient(circle at 10% 85%, 
-                    rgba(108, 92, 231, 0.08) 0%, 
-                    transparent 50%
-                ),
-                radial-gradient(circle at 85% 15%, 
-                    rgba(0, 184, 148, 0.06) 0%, 
-                    transparent 50%
-                ),
-                radial-gradient(circle at 50% 50%, 
-                    rgba(253, 203, 110, 0.04) 0%, 
-                    transparent 60%
-                );
-            background-attachment: fixed;
-            background-size: cover;
-        }
+        radial-gradient(circle at 20% 30%, 
+            rgba(255, 255, 255, 0.05) 0%, 
+            transparent 40%
+        ),
+        radial-gradient(circle at 70% 60%, 
+            rgba(255, 255, 255, 0.03) 0%, 
+            transparent 40%
+        ),
+        radial-gradient(circle at 90% 10%, 
+            rgba(255, 255, 255, 0.04) 0%, 
+            transparent 35%
+        ),
+        /* Неоновые акценты */
+        radial-gradient(circle at 10% 85%, 
+            rgba(108, 92, 231, 0.08) 0%, 
+            transparent 50%
+        ),
+        radial-gradient(circle at 85% 15%, 
+            rgba(0, 184, 148, 0.06) 0%, 
+            transparent 50%
+        ),
+        radial-gradient(circle at 50% 50%, 
+            rgba(253, 203, 110, 0.04) 0%, 
+            transparent 60%
+        );
+    background-attachment: fixed;
+    background-size: cover;
+}
 
-        /* Анимация звезд (мерцание) */
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 1; }
-        }
+/* Анимация звезд (мерцание) */
+@keyframes twinkle {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+}
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            25% { transform: translateY(-10px) rotate(90deg); }
-            50% { transform: translateY(0) rotate(180deg); }
-            75% { transform: translateY(10px) rotate(270deg); }
-        }
+@keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    25% { transform: translateY(-10px) rotate(90deg); }
+    50% { transform: translateY(0) rotate(180deg); }
+    75% { transform: translateY(10px) rotate(270deg); }
+}
 
-        /* Контейнер для звезд */
-        .stars-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-        }
+/* Контейнер для звезд */
+.stars-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+}
 
-        /* Звезды */
-        .star {
-            position: absolute;
-            background-color: white;
-            border-radius: 50%;
-            animation: twinkle 3s infinite;
-        }
+/* Звезды */
+.star {
+    position: absolute;
+    background-color: white;
+    border-radius: 50%;
+    animation: twinkle 3s infinite;
+}
 
-        /* Большие звезды */
-        .star.large {
-            width: 2px;
-            height: 2px;
-            box-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
-        }
+/* Большие звезды */
+.star.large {
+    width: 2px;
+    height: 2px;
+    box-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
+}
 
-        /* Средние звезды */
-        .star.medium {
-            width: 1.5px;
-            height: 1.5px;
-            box-shadow: 0 0 4px rgba(255, 255, 255, 0.6);
-        }
+/* Средние звезды */
+.star.medium {
+    width: 1.5px;
+    height: 1.5px;
+    box-shadow: 0 0 4px rgba(255, 255, 255, 0.6);
+}
 
-        /* Мелкие звезды */
-        .star.small {
-            width: 1px;
-            height: 1px;
-            box-shadow: 0 0 2px rgba(255, 255, 255, 0.4);
-        }
+/* Мелкие звезды */
+.star.small {
+    width: 1px;
+    height: 1px;
+    box-shadow: 0 0 2px rgba(255, 255, 255, 0.4);
+}
 
-        /* Парящие частицы */
-        .particle {
-            position: absolute;
-            border-radius: 50%;
-            background: radial-gradient(circle, 
-                rgba(108, 92, 231, 0.3) 0%, 
-                rgba(108, 92, 231, 0.1) 70%, 
-                transparent 100%
-            );
-            filter: blur(1px);
-            animation: float 20s infinite linear;
-        }
+/* Парящие частицы */
+.particle {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle, 
+        rgba(108, 92, 231, 0.3) 0%, 
+        rgba(108, 92, 231, 0.1) 70%, 
+        transparent 100%
+    );
+    filter: blur(1px);
+    animation: float 20s infinite linear;
+}
 
-        /* Лучи света */
-        .light-beam {
-            position: absolute;
-            width: 1px;
-            height: 200px;
-            background: linear-gradient(to bottom, 
-                transparent 0%, 
-                rgba(108, 92, 231, 0.3) 50%, 
-                transparent 100%
-            );
-            transform-origin: top center;
-            animation: rotateBeam 120s infinite linear;
-        }
+/* Лучи света */
+.light-beam {
+    position: absolute;
+    width: 1px;
+    height: 200px;
+    background: linear-gradient(to bottom, 
+        transparent 0%, 
+        rgba(108, 92, 231, 0.3) 50%, 
+        transparent 100%
+    );
+    transform-origin: top center;
+    animation: rotateBeam 120s infinite linear;
+}
 
-        @keyframes rotateBeam {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
+@keyframes rotateBeam {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
 
-        /* Сетка/гексагоны */
-        .grid-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                linear-gradient(rgba(108, 92, 231, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(108, 92, 231, 0.03) 1px, transparent 1px);
-            background-size: 50px 50px;
-            pointer-events: none;
-            z-index: -1;
-            opacity: 0.3;
-        }
+/* Сетка/гексагоны (опционально) */
+.grid-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(rgba(108, 92, 231, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(108, 92, 231, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+    pointer-events: none;
+    z-index: -1;
+    opacity: 0.3;
+}
 
-        /* Эффект глубины */
-        .depth-layer {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at center, 
-                    transparent 20%, 
-                    rgba(10, 10, 26, 0.7) 70%
-                );
-            pointer-events: none;
-            z-index: -1;
-        }
+/* Эффект глубины */
+.depth-layer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at center, 
+            transparent 20%, 
+            rgba(10, 10, 26, 0.7) 70%
+        );
+    pointer-events: none;
+    z-index: -1;
+}
         
         .main-container {
             display: flex;
@@ -314,18 +307,6 @@
             left: 100%;
         }
 
-        .btn-quick {
-            background: linear-gradient(135deg, #636e72, #2d3436);
-            color: #e6e6e6;
-            margin-top: 10px;
-            font-size: 0.9em;
-        }
-        
-        .btn-quick:hover {
-            background: linear-gradient(135deg, #2d3436, #636e72);
-            transform: translateY(-2px);
-        }
-
         .pulse {
             animation: pulse 2s infinite;
         }
@@ -378,18 +359,6 @@
             z-index: 1000;
             display: none;
             animation: slideIn 0.3s ease-out;
-        }
-        
-        .notification.warning {
-            background: linear-gradient(135deg, #fd79a8, #e84393);
-        }
-        
-        .notification.success {
-            background: linear-gradient(135deg, #00b894, #00a085);
-        }
-        
-        .notification.error {
-            background: linear-gradient(135deg, #d63031, #c0392b);
         }
         
         @keyframes slideIn {
@@ -603,9 +572,6 @@
                     <button class="btn btn-primary pulse" id="downloadBtn">
                         <i class="fas fa-download"></i> Скачать
                     </button>
-                    <button class="btn btn-quick" id="quickDownloadBtn">
-                        <i class="fas fa-bolt"></i> Скачать без проверки
-                    </button>
                     <div class="loading" id="loading">Проверка игры...</div>
                     <div class="countdown" id="countdown" style="display: none;">
                         Скачивание начнется через: <span id="timer">10</span> секунд
@@ -690,360 +656,452 @@
     </div>
 
     <script>
-        // Создание звездного фона
-        function createStarfield() {
-            const container = document.createElement('div');
-            container.className = 'stars-container';
-            
-            // Создаем 150 звезд
-            for (let i = 0; i < 150; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                
-                // Случайный размер
-                const sizes = ['large', 'medium', 'small'];
-                star.classList.add(sizes[Math.floor(Math.random() * sizes.length)]);
-                
-                // Случайная позиция
-                star.style.left = `${Math.random() * 100}%`;
-                star.style.top = `${Math.random() * 100}%`;
-                
-                // Случайная анимация
-                const duration = 2 + Math.random() * 4;
-                const delay = Math.random() * 5;
-                star.style.animation = `twinkle ${duration}s infinite ${delay}s`;
-                
-                // Случайная яркость
-                star.style.opacity = 0.3 + Math.random() * 0.7;
-                
-                container.appendChild(star);
-            }
-            
-            // Создаем 20 парящих частиц
-            for (let i = 0; i < 20; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                
-                const size = 20 + Math.random() * 60;
-                particle.style.width = `${size}px`;
-                particle.style.height = `${size}px`;
-                particle.style.left = `${Math.random() * 100}%`;
-                particle.style.top = `${Math.random() * 100}%`;
-                
-                // Случайный цвет
-                const colors = [
-                    'rgba(108, 92, 231, 0.3)',
-                    'rgba(0, 184, 148, 0.3)',
-                    'rgba(253, 203, 110, 0.3)',
-                    'rgba(85, 73, 192, 0.3)'
-                ];
-                const color = colors[Math.floor(Math.random() * colors.length)];
-                particle.style.background = `radial-gradient(circle, ${color} 0%, transparent 70%)`;
-                
-                // Случайная анимация
-                const duration = 15 + Math.random() * 25;
-                particle.style.animation = `float ${duration}s infinite linear`;
-                
-                container.appendChild(particle);
-            }
-            
-            // Создаем лучи света
-            for (let i = 0; i < 8; i++) {
-                const beam = document.createElement('div');
-                beam.className = 'light-beam';
-                beam.style.left = '50%';
-                beam.style.top = '50%';
-                beam.style.transform = `rotate(${i * 45}deg)`;
-                beam.style.animationDelay = `${i * 15}s`;
-                container.appendChild(beam);
-            }
-            
-            // Создаем сетку
-            const grid = document.createElement('div');
-            grid.className = 'grid-overlay';
-            
-            // Слой глубины
-            const depth = document.createElement('div');
-            depth.className = 'depth-layer';
-            
-            document.body.appendChild(container);
-            document.body.appendChild(grid);
-            document.body.appendChild(depth);
-        }
+	
+	// Создание звездного фона
+function createStarfield() {
+    const container = document.createElement('div');
+    container.className = 'stars-container';
+    
+    // Создаем 150 звезд
+    for (let i = 0; i < 150; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        
+        // Случайный размер
+        const sizes = ['large', 'medium', 'small'];
+        star.classList.add(sizes[Math.floor(Math.random() * sizes.length)]);
+        
+        // Случайная позиция
+        star.style.left = `${Math.random() * 100}%`;
+        star.style.top = `${Math.random() * 100}%`;
+        
+        // Случайная анимация
+        const duration = 2 + Math.random() * 4;
+        const delay = Math.random() * 5;
+        star.style.animation = `twinkle ${duration}s infinite ${delay}s`;
+        
+        // Случайная яркость
+        star.style.opacity = 0.3 + Math.random() * 0.7;
+        
+        container.appendChild(star);
+    }
+    
+    // Создаем 20 парящих частиц
+    for (let i = 0; i < 20; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        
+        const size = 20 + Math.random() * 60;
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        particle.style.left = `${Math.random() * 100}%`;
+        particle.style.top = `${Math.random() * 100}%`;
+        
+        // Случайный цвет
+        const colors = [
+            'rgba(108, 92, 231, 0.3)',
+            'rgba(0, 184, 148, 0.3)',
+            'rgba(253, 203, 110, 0.3)',
+            'rgba(85, 73, 192, 0.3)'
+        ];
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        particle.style.background = `radial-gradient(circle, ${color} 0%, transparent 70%)`;
+        
+        // Случайная анимация
+        const duration = 15 + Math.random() * 25;
+        particle.style.animation = `float ${duration}s infinite linear`;
+        
+        container.appendChild(particle);
+    }
+    
+    // Создаем лучи света
+    for (let i = 0; i < 8; i++) {
+        const beam = document.createElement('div');
+        beam.className = 'light-beam';
+        beam.style.left = '50%';
+        beam.style.top = '50%';
+        beam.style.transform = `rotate(${i * 45}deg)`;
+        beam.style.animationDelay = `${i * 15}s`;
+        container.appendChild(beam);
+    }
+    
+    // Создаем сетку
+    const grid = document.createElement('div');
+    grid.className = 'grid-overlay';
+    
+    // Слой глубины
+    const depth = document.createElement('div');
+    depth.className = 'depth-layer';
+    
+    document.body.appendChild(container);
+    document.body.appendChild(grid);
+    document.body.appendChild(depth);
+}
 
-        // Эффект параллакса при движении мыши
-        function addParallaxEffect() {
-            document.addEventListener('mousemove', (e) => {
-                const x = (e.clientX / window.innerWidth - 0.5) * 20;
-                const y = (e.clientY / window.innerHeight - 0.5) * 20;
+// Эффект параллакса при движении мыши
+function addParallaxEffect() {
+    document.addEventListener('mousemove', (e) => {
+        const x = (e.clientX / window.innerWidth - 0.5) * 20;
+        const y = (e.clientY / window.innerHeight - 0.5) * 20;
+        
+        const stars = document.querySelector('.stars-container');
+        if (stars) {
+            stars.style.transform = `translate(${x}px, ${y}px)`;
+        }
+        
+        const particles = document.querySelectorAll('.particle');
+        particles.forEach(particle => {
+            const speed = 0.3;
+            const particleX = (e.clientX / window.innerWidth - 0.5) * speed * 100;
+            const particleY = (e.clientY / window.innerHeight - 0.5) * speed * 100;
+            
+            const currentX = parseFloat(particle.style.left || 0);
+            const currentY = parseFloat(particle.style.top || 0);
+            
+            particle.style.left = `${currentX + particleX * 0.01}%`;
+            particle.style.top = `${currentY + particleY * 0.01}%`;
+        });
+    });
+}
+
+// Инициализация фона при загрузке
+document.addEventListener('DOMContentLoaded', () => {
+    createStarfield();
+    addParallaxEffect();
+    
+    // Плавное появление фона
+    document.body.style.opacity = '0';
+    document.body.style.transition = 'opacity 1.5s ease';
+    
+    setTimeout(() => {
+        document.body.style.opacity = '1';
+    }, 100);
+});
+
+// Адаптация к изменению размера окна
+window.addEventListener('resize', () => {
+    const container = document.querySelector('.stars-container');
+    if (container) {
+        container.remove();
+        createStarfield();
+    }
+});
+	
+    // Скрипт для подсветки ссылки SteamDB
+    document.addEventListener('DOMContentLoaded', function() {
+        const steamdbLinks = document.querySelectorAll('a[href="https://steamdb.info"]');
+        steamdbLinks.forEach(link => {
+            const underline = link.querySelector('span');
+            
+            link.addEventListener('mouseenter', function() {
+                underline.style.width = '100%';
+            });
+            
+            link.addEventListener('mouseleave', function() {
+                underline.style.width = '0';
+            });
+        });
+    });
+
+    // Скрипт для красивого скроллбара
+    document.addEventListener('DOMContentLoaded', function() {
+        const scrollbarStyles = document.createElement('style');
+        scrollbarStyles.textContent = `
+            ::-webkit-scrollbar {
+                width: 10px;
+                height: 10px;
+            }
+            
+            ::-webkit-scrollbar-track {
+                background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+                border-radius: 5px;
+                border: 1px solid #2d3436;
+            }
+            
+            ::-webkit-scrollbar-thumb {
+                background: linear-gradient(135deg, #6c5ce7 0%, #5649c0 100%);
+                border-radius: 5px;
+                border: 2px solid transparent;
+                background-clip: padding-box;
+                transition: all 0.3s ease;
+            }
+            
+            ::-webkit-scrollbar-thumb:hover {
+                background: linear-gradient(135deg, #5649c0 0%, #6c5ce7 100%);
+                box-shadow: 0 0 10px rgba(108, 92, 231, 0.5);
+            }
+            
+            ::-webkit-scrollbar-corner {
+                background: #1a1a2e;
+            }
+            
+            .game-description::-webkit-scrollbar {
+                width: 6px;
+            }
+            
+            .game-description::-webkit-scrollbar-track {
+                background: rgba(27, 40, 56, 0.5);
+                border-radius: 3px;
+            }
+            
+            .game-description::-webkit-scrollbar-thumb {
+                background: linear-gradient(135deg, #00b894 0%, #00a085 100%);
+                border-radius: 3px;
+            }
+            
+            .game-description::-webkit-scrollbar-thumb:hover {
+                background: linear-gradient(135deg, #00a085 0%, #00b894 100%);
+            }
+            
+            * {
+                scrollbar-width: thin;
+                scrollbar-color: #6c5ce7 #1a1a2e;
+            }
+            
+            ::-webkit-scrollbar-thumb {
+                animation: scrollbarFadeIn 0.5s ease;
+            }
+            
+            @keyframes scrollbarFadeIn {
+                from { opacity: 0.5; }
+                to { opacity: 1; }
+            }
+        `;
+        
+        document.head.appendChild(scrollbarStyles);
+    });
+
+    // Основной скрипт
+    document.addEventListener('DOMContentLoaded', function() {
+        const appIdInput = document.getElementById('appIdInput');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const notification = document.getElementById('notification');
+        const countdown = document.getElementById('countdown');
+        const timer = document.getElementById('timer');
+        const progressBar = document.getElementById('progressBar');
+        const progressFill = document.getElementById('progressFill');
+        const loading = document.getElementById('loading');
+        const gameInfoCard = document.getElementById('gameInfoCard');
+        const errorCard = document.getElementById('errorCard');
+        const gameImage = document.getElementById('gameImage');
+        const imagePlaceholder = document.getElementById('imagePlaceholder');
+        const gameTitle = document.getElementById('gameTitle');
+        const gamePrice = document.getElementById('gamePrice');
+        const gameDescription = document.getElementById('gameDescription');
+        const steamStoreLink = document.getElementById('steamStoreLink');
+        
+        const DOWNLOAD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1442892654886129727/g0Qy0TQMIOJRZlGA0tawuumNAygEYFprnwMaa0p8W-2SJ3eiEnAdBbpuVynoJG1vZZQY';
+        
+        let countdownInterval;
+        let timeLeft = 10;
+        let currentAppId = '';
+        let currentGameName = '';
+        let currentGameImageUrl = '';
+		let searchTimeout;
+
+
+        // Функция для проверки информации об игре
+        async function checkGameInfo(appId) {
+            if (!appId) return;
+            
+            currentAppId = appId;
+            
+            // Скрываем предыдущие результаты
+            gameInfoCard.style.display = 'none';
+            errorCard.classList.remove('show');
+            loading.classList.add('show');
+            
+            try {
+                const proxyUrl = 'https://corsproxy.io/?';
+                const apiUrl = `https://store.steampowered.com/api/appdetails?appids=${appId}&l=russian&cc=ru`;
                 
-                const stars = document.querySelector('.stars-container');
-                if (stars) {
-                    stars.style.transform = `translate(${x}px, ${y}px)`;
+                const response = await fetch(proxyUrl + encodeURIComponent(apiUrl), {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Ошибка сети: ${response.status}`);
                 }
                 
-                const particles = document.querySelectorAll('.particle');
-                particles.forEach(particle => {
-                    const speed = 0.3;
-                    const particleX = (e.clientX / window.innerWidth - 0.5) * speed * 100;
-                    const particleY = (e.clientY / window.innerHeight - 0.5) * speed * 100;
-                    
-                    const currentX = parseFloat(particle.style.left || 0);
-                    const currentY = parseFloat(particle.style.top || 0);
-                    
-                    particle.style.left = `${currentX + particleX * 0.01}%`;
-                    particle.style.top = `${currentY + particleY * 0.01}%`;
-                });
-            });
-        }
-
-        // Основной скрипт
-        document.addEventListener('DOMContentLoaded', function() {
-            const appIdInput = document.getElementById('appIdInput');
-            const downloadBtn = document.getElementById('downloadBtn');
-            const quickDownloadBtn = document.getElementById('quickDownloadBtn');
-            const notification = document.getElementById('notification');
-            const countdown = document.getElementById('countdown');
-            const timer = document.getElementById('timer');
-            const progressBar = document.getElementById('progressBar');
-            const progressFill = document.getElementById('progressFill');
-            const loading = document.getElementById('loading');
-            const gameInfoCard = document.getElementById('gameInfoCard');
-            const errorCard = document.getElementById('errorCard');
-            const gameImage = document.getElementById('gameImage');
-            const imagePlaceholder = document.getElementById('imagePlaceholder');
-            const gameTitle = document.getElementById('gameTitle');
-            const gamePrice = document.getElementById('gamePrice');
-            const gameDescription = document.getElementById('gameDescription');
-            const steamStoreLink = document.getElementById('steamStoreLink');
-            
-            const DOWNLOAD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1442892654886129727/g0Qy0TQMIOJRZlGA0tawuumNAygEYFprnwMaa0p8W-2SJ3eiEnAdBbpuVynoJG1vZZQY';
-            
-            let countdownInterval;
-            let timeLeft = 10;
-            let currentAppId = '';
-            let currentGameName = '';
-            let currentGameImageUrl = '';
-            let searchTimeout;
-
-            // Инициализация фона при загрузке
-            createStarfield();
-            addParallaxEffect();
-            
-            // Плавное появление фона
-            document.body.style.opacity = '0';
-            document.body.style.transition = 'opacity 1.5s ease';
-            
-            setTimeout(() => {
-                document.body.style.opacity = '1';
-            }, 100);
-
-            // Адаптация к изменению размера окна
-            window.addEventListener('resize', () => {
-                const container = document.querySelector('.stars-container');
-                if (container) {
-                    container.remove();
-                    createStarfield();
+                const data = await response.json();
+                
+                if (!data || !data[appId]) {
+                    throw new Error('Некорректный ответ от Steam API');
                 }
-            });
-
-            // Скрипт для подсветки ссылки SteamDB
-            const steamdbLinks = document.querySelectorAll('a[href="https://steamdb.info"]');
-            steamdbLinks.forEach(link => {
-                const underline = link.querySelector('span');
                 
-                link.addEventListener('mouseenter', function() {
-                    underline.style.width = '100%';
-                });
+                if (!data[appId].success) {
+                    throw new Error('Игра не найдена или недоступна');
+                }
                 
-                link.addEventListener('mouseleave', function() {
-                    underline.style.width = '0';
-                });
-            });
-
-            // Функция для проверки информации об игре
-            async function checkGameInfo(appId) {
-                if (!appId) return;
+                const gameData = data[appId].data;
                 
-                currentAppId = appId;
+                currentGameName = gameData.name || 'Неизвестная игра';
+                currentGameImageUrl = gameData.header_image || null;
                 
-                // Скрываем предыдущие результаты
-                gameInfoCard.style.display = 'none';
-                errorCard.classList.remove('show');
-                loading.classList.add('show');
+                gameTitle.textContent = currentGameName;
                 
-                try {
-                    const proxyUrl = 'https://corsproxy.io/?';
-                    const apiUrl = `https://store.steampowered.com/api/appdetails?appids=${appId}&l=russian&cc=ru`;
+                // Обновляем цену
+                let priceText = 'Цена не указана';
+                
+                if (gameData.is_free === true) {
+                    priceText = 'Бесплатно';
+                } 
+                else if (gameData.price_overview && gameData.price_overview.final_formatted) {
+                    priceText = gameData.price_overview.final_formatted;
                     
-                    const response = await fetch(proxyUrl + encodeURIComponent(apiUrl), {
-                        method: 'GET',
-                        headers: {
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json'
-                        }
-                    });
-                    
-                    if (!response.ok) {
-                        throw new Error(`Ошибка сети: ${response.status}`);
-                    }
-                    
-                    const data = await response.json();
-                    
-                    if (!data || !data[appId]) {
-                        throw new Error('Некорректный ответ от Steam API');
-                    }
-                    
-                    if (!data[appId].success) {
-                        throw new Error('Игра не найдена или недоступна');
-                    }
-                    
-                    const gameData = data[appId].data;
-                    
-                    currentGameName = gameData.name || 'Неизвестная игра';
-                    currentGameImageUrl = gameData.header_image || null;
-                    
-                    gameTitle.textContent = currentGameName;
-                    
-                    // Обновляем цену
-                    let priceText = 'Цена не указана';
-                    
-                    if (gameData.is_free === true) {
-                        priceText = 'Бесплатно';
-                    } 
-                    else if (gameData.price_overview && gameData.price_overview.final_formatted) {
-                        priceText = gameData.price_overview.final_formatted;
+                    if (gameData.price_overview.discount_percent > 0) {
+                        const discount = gameData.price_overview.discount_percent;
+                        const originalPrice = gameData.price_overview.initial_formatted;
+                        const finalPrice = gameData.price_overview.final_formatted;
                         
-                        if (gameData.price_overview.discount_percent > 0) {
-                            const discount = gameData.price_overview.discount_percent;
-                            const originalPrice = gameData.price_overview.initial_formatted;
-                            const finalPrice = gameData.price_overview.final_formatted;
-                            
-                            priceText = `
-                                <div style="display: flex; flex-direction: column; gap: 3px;">
-                                    <span style="text-decoration: line-through; color: #fd79a8; font-size: 0.8em;">
-                                        ${originalPrice}
-                                    </span>
-                                    <span style="color: #00b894; font-weight: bold;">
-                                        ${finalPrice}
-                                    </span>
-                                    <span style="background: linear-gradient(135deg, #fd79a8, #e84393); 
-                                               color: white; 
-                                               padding: 1px 6px; 
-                                               border-radius: 10px; 
-                                               font-size: 0.7em; 
-                                               display: inline-block; 
-                                               width: fit-content;">
-                                        -${discount}%
-                                    </span>
-                                </div>
-                            `;
-                        }
+                        priceText = `
+                            <div style="display: flex; flex-direction: column; gap: 3px;">
+                                <span style="text-decoration: line-through; color: #fd79a8; font-size: 0.8em;">
+                                    ${originalPrice}
+                                </span>
+                                <span style="color: #00b894; font-weight: bold;">
+                                    ${finalPrice}
+                                </span>
+                                <span style="background: linear-gradient(135deg, #fd79a8, #e84393); 
+                                           color: white; 
+                                           padding: 1px 6px; 
+                                           border-radius: 10px; 
+                                           font-size: 0.7em; 
+                                           display: inline-block; 
+                                           width: fit-content;">
+                                    -${discount}%
+                                </span>
+                            </div>
+                        `;
                     }
-                    else if (gameData.price_overview && gameData.price_overview.final) {
-                        const price = gameData.price_overview.final / 100;
-                        priceText = `${price.toFixed(2)} ₽`;
-                    }
-                    else if (gameData.release_date && gameData.release_date.coming_soon) {
-                        priceText = 'Скоро в продаже';
-                    }
+                }
+                else if (gameData.price_overview && gameData.price_overview.final) {
+                    const price = gameData.price_overview.final / 100;
+                    priceText = `${price.toFixed(2)} ₽`;
+                }
+                else if (gameData.release_date && gameData.release_date.coming_soon) {
+                    priceText = 'Скоро в продаже';
+                }
+                
+                gamePrice.innerHTML = priceText;
+                
+                let description = gameData.short_description || gameData.detailed_description || 'Описание отсутствует';
+                description = description.replace(/<[^>]*>/g, '');
+                gameDescription.textContent = description;
+                
+                steamStoreLink.href = `https://store.steampowered.com/app/${appId}/`;
+                
+                if (currentGameImageUrl) {
+                    imagePlaceholder.style.display = 'none';
+                    gameImage.style.display = 'block';
+                    gameImage.src = currentGameImageUrl;
+                    gameImage.alt = currentGameName;
                     
-                    gamePrice.innerHTML = priceText;
-                    
-                    let description = gameData.short_description || gameData.detailed_description || 'Описание отсутствует';
-                    description = description.replace(/<[^>]*>/g, '');
-                    gameDescription.textContent = description;
-                    
-                    steamStoreLink.href = `https://store.steampowered.com/app/${appId}/`;
-                    
-                    if (currentGameImageUrl) {
-                        imagePlaceholder.style.display = 'none';
-                        gameImage.style.display = 'block';
-                        gameImage.src = currentGameImageUrl;
-                        gameImage.alt = currentGameName;
-                        
-                        gameImage.onerror = function() {
-                            imagePlaceholder.style.display = 'flex';
-                            gameImage.style.display = 'none';
-                            imagePlaceholder.innerHTML = '<i class="fas fa-image"></i> Изображение не найдено';
-                            currentGameImageUrl = null;
-                        };
-                    } else {
-                        imagePlaceholder.innerHTML = '<i class="fas fa-image"></i> Изображение отсутствует';
+                    gameImage.onerror = function() {
                         imagePlaceholder.style.display = 'flex';
                         gameImage.style.display = 'none';
-                    }
-                    
-                    gameInfoCard.style.display = 'block';
-                    errorCard.classList.remove('show');
-                    
-                } catch (error) {
-                    console.error('Ошибка при получении информации об игре:', error);
-                    
-                    currentGameName = '';
-                    currentGameImageUrl = null;
-                    
-                    errorCard.classList.add('show');
-                    gameInfoCard.style.display = 'none';
-                    
-                    const errorMsg = document.getElementById('errorMessage');
-                    
-                    if (error.message.includes('404')) {
-                        errorMsg.textContent = 'Игра с таким App ID не найдена в Steam.';
-                    } else if (error.message.includes('Сеть')) {
-                        errorMsg.textContent = 'Проблемы с подключением к Steam. Проверьте интернет.';
-                    } else {
-                        errorMsg.textContent = 'Произошла ошибка. Попробуйте другой App ID.';
-                    }
-                    
-                } finally {
-                    loading.classList.remove('show');
+                        imagePlaceholder.innerHTML = '<i class="fas fa-image"></i> Изображение не найдено';
+                        currentGameImageUrl = null;
+                    };
+                } else {
+                    imagePlaceholder.innerHTML = '<i class="fas fa-image"></i> Изображение отсутствует';
+                    imagePlaceholder.style.display = 'flex';
+                    gameImage.style.display = 'none';
                 }
+                
+                gameInfoCard.style.display = 'block';
+                errorCard.classList.remove('show');
+                
+            } catch (error) {
+                console.error('Ошибка при получении информации об игре:', error);
+                
+                currentGameName = '';
+                currentGameImageUrl = null;
+                
+                errorCard.classList.add('show');
+                gameInfoCard.style.display = 'none';
+                
+                const errorMsg = document.getElementById('errorMessage');
+                
+                if (error.message.includes('404')) {
+                    errorMsg.textContent = 'Игра с таким App ID не найдена в Steam.';
+                } else if (error.message.includes('Сеть')) {
+                    errorMsg.textContent = 'Проблемы с подключением к Steam. Проверьте интернет.';
+                } else {
+                    errorMsg.textContent = 'Произошла ошибка. Попробуйте другой App ID.';
+                }
+                
+            } finally {
+                loading.classList.remove('show');
             }
+        }
 
-            // Функция для отправки уведомления в Discord
-            async function sendDownloadNotification(appId, gameName, gameImageUrl) {
-                try {
-                    const userAgent = navigator.userAgent;
-                    const timestamp = Math.floor(Date.now() / 1000);
-                    
-                    const message = {
-                        content: null,
-                        embeds: [
-                            {
-                                title: `🎮 Скачивание игры: ${gameName}`,
-                                url: `https://store.steampowered.com/app/${appId}/`,
-                                description: `Пользователь скачал игру через Manifest&Lua\n\n**App ID:** ${appId}`,
-                                color: 5814783,
-                                thumbnail: gameImageUrl ? {
-                                    url: gameImageUrl
-                                } : null,
-                                fields: [
-                                    {
-                                        name: "📊 Статус",
-                                        value: "✅ Скачивание начато",
-                                        inline: true
-                                    },
-                                    {
-                                        name: "🕐 Время",
-                                        value: `<t:${timestamp}:F>`,
-                                        inline: true
-                                    },
-                                    {
-                                        name: "🌐 User Agent",
-                                        value: `\`${userAgent.substring(0, 50)}...\``
-                                    }
-                                ],
-                                image: gameImageUrl ? {
-                                    url: gameImageUrl
-                                } : null,
-                                footer: {
-                                    text: "Manifest&Lua Download Tracker",
-                                    icon_url: "https://cdn.discordapp.com/embed/avatars/0.png"
+        // Функция для отправки уведомления в Discord
+        async function sendDownloadNotification(appId, gameName, gameImageUrl) {
+            try {
+                const userAgent = navigator.userAgent;
+                const timestamp = Math.floor(Date.now() / 1000);
+                
+                const message = {
+                    content: null,
+                    embeds: [
+                        {
+                            title: `🎮 Скачивание игры: ${gameName}`,
+                            url: `https://store.steampowered.com/app/${appId}/`,
+                            description: `Пользователь скачал игру через Manifest&Lua\n\n**App ID:** ${appId}`,
+                            color: 5814783,
+                            thumbnail: gameImageUrl ? {
+                                url: gameImageUrl
+                            } : null,
+                            fields: [
+                                {
+                                    name: "📊 Статус",
+                                    value: "✅ Скачивание начато",
+                                    inline: true
                                 },
-                                timestamp: new Date().toISOString()
-                            }
-                        ]
+                                {
+                                    name: "🕐 Время",
+                                    value: `<t:${timestamp}:F>`,
+                                    inline: true
+                                },
+                                {
+                                    name: "🌐 User Agent",
+                                    value: `\`${userAgent.substring(0, 50)}...\``
+                                }
+                            ],
+                            image: gameImageUrl ? {
+                                url: gameImageUrl
+                            } : null,
+                            footer: {
+                                text: "Manifest&Lua Download Tracker",
+                                icon_url: "https://cdn.discordapp.com/embed/avatars/0.png"
+                            },
+                            timestamp: new Date().toISOString()
+                        }
+                    ]
+                };
+                
+                await fetch(DOWNLOAD_WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(message)
+                });
+                
+                console.log('Уведомление отправлено в Discord');
+                
+            } catch (error) {
+                console.error('Ошибка отправки уведомления в Discord:', error);
+                
+                try {
+                    const fallbackMessage = {
+                        content: `🎮 **Скачивание игры!**\n**Название:** ${gameName}\n**App ID:** ${appId}\n**Время:** <t:${Math.floor(Date.now() / 1000)}:R>`,
+                        embeds: []
                     };
                     
                     await fetch(DOWNLOAD_WEBHOOK_URL, {
@@ -1051,441 +1109,261 @@
                         headers: {
                             'Content-Type': 'application/json',
                         },
-                        body: JSON.stringify(message)
+                        body: JSON.stringify(fallbackMessage)
                     });
-                    
-                    console.log('Уведомление отправлено в Discord');
-                    
-                } catch (error) {
-                    console.error('Ошибка отправки уведомления в Discord:', error);
-                    
-                    try {
-                        const fallbackMessage = {
-                            content: `🎮 **Скачивание игры!**\n**Название:** ${gameName}\n**App ID:** ${appId}\n**Время:** <t:${Math.floor(Date.now() / 1000)}:R>`,
-                            embeds: []
-                        };
-                        
-                        await fetch(DOWNLOAD_WEBHOOK_URL, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify(fallbackMessage)
-                        });
-                    } catch (fallbackError) {
-                        console.error('Ошибка при отправке резервного сообщения:', fallbackError);
-                    }
+                } catch (fallbackError) {
+                    console.error('Ошибка при отправке резервного сообщения:', fallbackError);
                 }
             }
+        }
 
-            // Функция для начала отсчета
-            function startCountdown() {
-                timeLeft = 10;
-                countdown.style.display = 'block';
-                progressBar.style.display = 'block';
-                downloadBtn.disabled = true;
-                downloadBtn.classList.remove('pulse');
-                downloadBtn.innerHTML = '<i class="fas fa-clock"></i> Пожалуйста, подождите...';
+        // Функция для начала отсчета
+        function startCountdown() {
+            timeLeft = 10;
+            countdown.style.display = 'block';
+            progressBar.style.display = 'block';
+            downloadBtn.disabled = true;
+            downloadBtn.classList.remove('pulse');
+            downloadBtn.innerHTML = '<i class="fas fa-clock"></i> Пожалуйста, подождите...';
+            
+            countdownInterval = setInterval(function() {
+                timeLeft--;
+                timer.textContent = timeLeft;
                 
-                countdownInterval = setInterval(function() {
-                    timeLeft--;
-                    timer.textContent = timeLeft;
-                    
-                    const progress = ((10 - timeLeft) / 10) * 100;
-                    progressFill.style.width = progress + '%';
-                    
-                    if (timeLeft <= 0) {
-                        clearInterval(countdownInterval);
-                        executeDownload();
-                    }
-                }, 1000);
-            }
-
-            // Функция для выполнения скачивания
-            function executeDownload() {
-                countdown.style.display = 'none';
-                progressBar.style.display = 'none';
+                const progress = ((10 - timeLeft) / 10) * 100;
+                progressFill.style.width = progress + '%';
                 
-                // Отправляем уведомление в Discord (даже если игра не найдена)
-                sendDownloadNotification(currentAppId, currentGameName, currentGameImageUrl);
-                
-                // Запускаем скачивание
-                downloadFile();
-                
-                // Показываем уведомление
-                showNotification(`Начато скачивание ${currentGameName}`, 'success');
-                
-                // Восстанавливаем кнопку
-                setTimeout(() => {
-                    downloadBtn.innerHTML = '<i class="fas fa-download"></i> Скачать';
-                    downloadBtn.disabled = false;
-                    downloadBtn.classList.add('pulse');
-                }, 2000);
-            }
-
-            // Функция для получения имени файла
-            function getFileName() {
-                if (currentGameName && currentGameName !== 'Неизвестная игра') {
-                    // Очищаем название от недопустимых символов
-                    const cleanName = currentGameName
-                        .replace(/[<>:"/\\|?*]/g, '')
-                        .replace(/\s+/g, '_');
-                    return `${cleanName}_${currentAppId}.zip`;
+                if (timeLeft <= 0) {
+                    clearInterval(countdownInterval);
+                    executeDownload();
                 }
-                return `game_${currentAppId}.zip`;
-            }
+            }, 1000);
+        }
 
-            // Функция для скачивания файла
-            function downloadFile() {
-                const directUrl = `https://steamgames554.s3.us-east-1.amazonaws.com/${currentAppId}.zip`;
-                
-                // Создаем временную ссылку
-                const tempLink = document.createElement('a');
-                tempLink.href = directUrl;
-                tempLink.download = getFileName();
-                tempLink.style.display = 'none';
-                
-                document.body.appendChild(tempLink);
-                tempLink.click();
-                
-                setTimeout(() => {
-                    document.body.removeChild(tempLink);
-                    
-                    // Проверяем, скачался ли файл
-                    checkDownloadStatus(directUrl);
-                }, 100);
+        // Функция для выполнения скачивания
+        function executeDownload() {
+    countdown.style.display = 'none';
+    progressBar.style.display = 'none';
+    
+    // Прямая ссылка на файл
+    const directUrl = `https://steamgames554.s3.us-east-1.amazonaws.com/${currentAppId}.zip`;
+    
+    // Создаем iframe для скачивания
+    const iframe = document.createElement('iframe');
+    iframe.style.display = 'none';
+    iframe.style.position = 'absolute';
+    iframe.style.left = '-9999px';
+    iframe.style.top = '-9999px';
+    iframe.src = directUrl;
+    
+    // Добавляем обработчик для отслеживания загрузки
+    iframe.onload = function() {
+        console.log('Файл начал загружаться через iframe');
+        
+        // Дополнительно создаем ссылку для скачивания
+        const tempLink = document.createElement('a');
+        tempLink.href = directUrl;
+        tempLink.download = getFileName();
+        tempLink.style.display = 'none';
+        
+        document.body.appendChild(tempLink);
+        setTimeout(() => {
+            tempLink.click();
+            document.body.removeChild(tempLink);
+        }, 500);
+    };
+    
+    iframe.onerror = function() {
+        console.error('Ошибка загрузки через iframe');
+        // Пробуем альтернативный метод
+        fallbackDownload();
+    };
+    
+    document.body.appendChild(iframe);
+    
+    showNotification(`Скачивание "${currentGameName}" началось!`, 'success');
+    
+    sendDownloadNotification(currentAppId, currentGameName, currentGameImageUrl);
+    
+    setTimeout(() => {
+        downloadBtn.innerHTML = '<i class="fas fa-download"></i> Скачать';
+        downloadBtn.disabled = false;
+        downloadBtn.classList.add('pulse');
+        
+        // Очищаем iframe через некоторое время
+        setTimeout(() => {
+            if (iframe.parentNode) {
+                iframe.parentNode.removeChild(iframe);
             }
+        }, 5000);
+    }, 1000);
+}
 
-            // Функция проверки статуса скачивания
-            function checkDownloadStatus(url) {
-                setTimeout(() => {
-                    // Показываем дополнительную информацию
-                    const infoDiv = document.createElement('div');
-                    infoDiv.style.cssText = `
-                        position: fixed;
-                        bottom: 20px;
-                        right: 20px;
-                        background: #16213e;
-                        padding: 15px;
-                        border-radius: 8px;
-                        border-left: 4px solid #00b894;
-                        z-index: 1000;
-                        max-width: 300px;
-                        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-                    `;
-                    
-                    infoDiv.innerHTML = `
-                        <div style="color: #00b894; font-weight: 600; margin-bottom: 5px;">
-                            <i class="fas fa-download"></i> Скачивание начато
-                        </div>
-                        <div style="color: #b2bec3; font-size: 0.9em; margin-bottom: 10px;">
-                            Файл: <code style="color: #fdcb6e;">${getFileName()}</code>
-                        </div>
-                        <div style="font-size: 0.8em; color: #636e72;">
-                            Если скачивание не началось:
-                            <a href="${url}" 
-                               style="color: #6c5ce7; text-decoration: none;"
-                               onclick="window.open('${url}', '_blank'); return false;">
-                               Нажмите здесь
-                            </a>
-                        </div>
-                    `;
-                    
-                    document.body.appendChild(infoDiv);
-                    
-                    // Автоматическое скрытие через 10 секунд
-                    setTimeout(() => {
-                        if (infoDiv.parentNode) {
-                            infoDiv.style.opacity = '0';
-                            infoDiv.style.transition = 'opacity 0.5s';
-                            setTimeout(() => {
-                                if (infoDiv.parentNode) {
-                                    infoDiv.parentNode.removeChild(infoDiv);
-                                }
-                            }, 500);
-                        }
-                    }, 10000);
-                }, 1000);
+// Альтернативный метод скачивания
+function fallbackDownload() {
+    // Метод через window.open
+    const directUrl = `https://steamgames554.s3.us-east-1.amazonaws.com/${currentAppId}.zip`;
+    
+    // Открываем в новом окне/вкладке
+    const newWindow = window.open(directUrl, '_blank');
+    
+    if (!newWindow) {
+        // Если всплывающие окна заблокированы, показываем инструкцию
+        showNotification('Разрешите всплывающие окна или скопируйте ссылку: ' + directUrl, 'error');
+        
+        // Показываем ссылку для копирования
+        const linkDisplay = document.createElement('div');
+        linkDisplay.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #1a1a2e;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid #6c5ce7;
+            z-index: 10000;
+            max-width: 500px;
+            width: 90%;
+        `;
+        
+        linkDisplay.innerHTML = `
+            <h3 style="color: #6c5ce7; margin-bottom: 10px;">Скачать вручную</h3>
+            <p style="margin-bottom: 15px; color: #b2bec3;">Скопируйте ссылку ниже и вставьте в адресную строку браузера:</p>
+            <div style="background: #0f0f23; padding: 10px; border-radius: 4px; margin-bottom: 15px; word-break: break-all;">
+                <code style="color: #00b894;">${directUrl}</code>
+            </div>
+            <button onclick="this.parentElement.remove()" style="
+                background: #6c5ce7;
+                color: white;
+                border: none;
+                padding: 8px 16px;
+                border-radius: 4px;
+                cursor: pointer;
+                float: right;
+            ">Закрыть</button>
+        `;
+        
+        document.body.appendChild(linkDisplay);
+    }
+}
+        
+        // Функция для прямого скачивания
+        async function directDownload() {
+            const enteredAppId = appIdInput.value.trim();
+            
+            if (!enteredAppId) {
+                showNotification('Пожалуйста, введите App ID', 'error');
+                return;
             }
-
-            // Функция обновления информации на карточке игры
-            function updateGameCardInfo(gameData) {
-                if (!gameData) return;
+			
+            
+            if (!/^\d+$/.test(enteredAppId)) {
+                showNotification('App ID должен содержать только цифры', 'error');
+                return;
+            }
+            
+            currentAppId = enteredAppId;
+            
+            loading.classList.add('show');
+            
+            try {
+                const proxyUrl = 'https://corsproxy.io/?';
+                const apiUrl = `https://store.steampowered.com/api/appdetails?appids=${enteredAppId}&cc=us&l=english`;
                 
-                const gameTitle = document.getElementById('gameTitle');
-                const gamePrice = document.getElementById('gamePrice');
-                const gameDescription = document.getElementById('gameDescription');
+                const response = await fetch(proxyUrl + encodeURIComponent(apiUrl));
                 
-                gameTitle.textContent = gameData.name || 'Неизвестная игра';
+                if (!response.ok) {
+                    throw new Error('Ошибка сети');
+                }
                 
-                if (gameData.is_free === true) {
-                    gamePrice.textContent = 'Бесплатно';
-                } else if (gameData.price_overview) {
-                    gamePrice.textContent = gameData.price_overview.final_formatted || 'Цена не указана';
+                const data = await response.json();
+                
+                if (data && data[enteredAppId] && data[enteredAppId].success) {
+                    const gameData = data[enteredAppId].data;
+                    currentGameName = gameData.name || 'Неизвестная игра';
+                    currentGameImageUrl = gameData.header_image || null;
+                    
+                    startCountdown();
                 } else {
-                    gamePrice.textContent = 'Цена не указана';
+                    throw new Error('Игра не найдена');
                 }
                 
-                let description = gameData.short_description || gameData.detailed_description || 'Описание отсутствует';
-                description = description.replace(/<[^>]*>/g, '');
-                gameDescription.textContent = description;
+            } catch (error) {
+                showNotification('Игра не найдена. Проверьте App ID.', 'error');
+            } finally {
+                loading.classList.remove('show');
             }
-
-            // Функция для запроса подтверждения скачивания
-            function askForDownloadConfirmation(appId) {
-                const confirmationDiv = document.createElement('div');
-                confirmationDiv.style.cssText = `
-                    position: fixed;
-                    top: 50%;
-                    left: 50%;
-                    transform: translate(-50%, -50%);
-                    background: #1a1a2e;
-                    padding: 25px;
-                    border-radius: 10px;
-                    border: 2px solid #fd79a8;
-                    z-index: 10000;
-                    max-width: 500px;
-                    width: 90%;
-                    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-                `;
-                
-                confirmationDiv.innerHTML = `
-                    <h3 style="color: #fd79a8; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
-                        <i class="fas fa-exclamation-triangle"></i> Внимание
-                    </h3>
-                    <p style="margin-bottom: 15px; color: #b2bec3; line-height: 1.5;">
-                        Игра с App ID <strong style="color: #6c5ce7;">${appId}</strong> не найдена в Steam.
-                    </p>
-                    <p style="margin-bottom: 20px; color: #fdcb6e; font-size: 0.9em; background: rgba(253, 203, 110, 0.1); padding: 10px; border-radius: 5px;">
-                        <i class="fas fa-info-circle"></i> Вы можете продолжить скачивание, но файл может не существовать или быть поврежденным.
-                    </p>
-                    <div style="display: flex; gap: 10px; justify-content: flex-end;">
-                        <button id="cancelDownloadBtn" style="
-                            background: #2d3436;
-                            color: #b2bec3;
-                            border: none;
-                            padding: 10px 20px;
-                            border-radius: 5px;
-                            cursor: pointer;
-                            transition: all 0.3s ease;
-                        ">Отмена</button>
-                        <button id="confirmDownloadBtn" style="
-                            background: linear-gradient(135deg, #fd79a8, #e84393);
-                            color: white;
-                            border: none;
-                            padding: 10px 20px;
-                            border-radius: 5px;
-                            cursor: pointer;
-                            transition: all 0.3s ease;
-                            font-weight: 600;
-                        ">Скачать в любом случае</button>
-                    </div>
-                `;
-                
-                document.body.appendChild(confirmationDiv);
-                
-                // Обработчики кнопок
-                document.getElementById('cancelDownloadBtn').addEventListener('click', function() {
-                    confirmationDiv.remove();
-                });
-                
-                document.getElementById('confirmDownloadBtn').addEventListener('click', function() {
-                    confirmationDiv.remove();
-                    startCountdown();
-                });
-                
-                // Закрытие при клике вне окна
-                confirmationDiv.addEventListener('click', function(e) {
-                    if (e.target === confirmationDiv) {
-                        confirmationDiv.remove();
-                    }
-                });
+        }
+        
+        // Функция для показа уведомления
+        function showNotification(message, type = 'success') {
+            notification.textContent = message;
+            notification.style.backgroundColor = type === 'success' ? '#00b894' : '#fd79a8';
+            notification.style.display = 'block';
+            
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+        
+        // Обработчики событий
+        downloadBtn.addEventListener('click', directDownload);
+        
+        appIdInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                directDownload();
             }
-
-            // Функция для прямого скачивания (основная)
-            async function directDownload() {
-                const enteredAppId = appIdInput.value.trim();
-                
-                if (!enteredAppId) {
-                    showNotification('Пожалуйста, введите App ID', 'error');
-                    return;
-                }
-                
-                if (!/^\d+$/.test(enteredAppId)) {
-                    showNotification('App ID должен содержать только цифры', 'error');
-                    return;
-                }
-                
-                currentAppId = enteredAppId;
-                loading.classList.add('show');
-                
-                try {
-                    const proxyUrl = 'https://corsproxy.io/?';
-                    const apiUrl = `https://store.steampowered.com/api/appdetails?appids=${enteredAppId}&cc=us&l=english`;
-                    
-                    const response = await fetch(proxyUrl + encodeURIComponent(apiUrl));
-                    
-                    if (!response.ok) {
-                        // Если API не отвечает, продолжаем без информации об игре
-                        console.warn('Steam API не отвечает, продолжаем скачивание');
-                        currentGameName = `App ID: ${enteredAppId}`;
-                        currentGameImageUrl = null;
-                        startCountdown();
-                        return;
-                    }
-                    
-                    const data = await response.json();
-                    
-                    if (data && data[enteredAppId] && data[enteredAppId].success) {
-                        const gameData = data[enteredAppId].data;
-                        currentGameName = gameData.name || 'Неизвестная игра';
-                        currentGameImageUrl = gameData.header_image || null;
-                        
-                        // Обновляем информацию на карточке
-                        updateGameCardInfo(gameData);
-                    } else {
-                        // Если игра не найдена в Steam, все равно предлагаем скачать
-                        console.warn('Игра не найдена в Steam, но продолжаем скачивание');
-                        currentGameName = `Игра (App ID: ${enteredAppId})`;
-                        currentGameImageUrl = null;
-                        
-                        // Показываем предупреждение
-                        showNotification('Игра не найдена в Steam, но вы можете попробовать скачать', 'warning');
-                        
-                        // Запускаем скачивание с подтверждением
-                        askForDownloadConfirmation(enteredAppId);
-                        return;
-                    }
-                    
-                    startCountdown();
-                    
-                } catch (error) {
-                    console.error('Ошибка при проверке игры:', error);
-                    
-                    // В случае ошибки все равно предлагаем скачать
-                    showNotification('Ошибка проверки, но вы можете попробовать скачать', 'warning');
-                    
-                    currentGameName = `Игра (App ID: ${enteredAppId})`;
-                    currentGameImageUrl = null;
-                    
-                    askForDownloadConfirmation(enteredAppId);
-                } finally {
-                    loading.classList.remove('show');
-                }
-            }
-
-            // Функция для быстрого скачивания (без проверки)
-            function quickDownload() {
-                const enteredAppId = appIdInput.value.trim();
-                
-                if (!enteredAppId) {
-                    showNotification('Введите App ID для быстрого скачивания', 'error');
-                    return;
-                }
-                
-                if (!/^\d+$/.test(enteredAppId)) {
-                    showNotification('App ID должен содержать только цифры', 'error');
-                    return;
-                }
-                
-                currentAppId = enteredAppId;
-                currentGameName = `Игра (App ID: ${enteredAppId})`;
-                
-                // Показываем подтверждение
-                const confirmQuick = confirm(`Скачать файл для App ID: ${enteredAppId} без проверки?\n\nВнимание: Файл может не существовать или быть поврежденным.`);
-                
-                if (confirmQuick) {
-                    showNotification('Быстрое скачивание начато', 'warning');
-                    downloadFile();
-                }
-            }
-
-            // Функция для показа уведомления
-            function showNotification(message, type = 'success') {
-                notification.textContent = message;
-                notification.className = `notification ${type}`;
-                notification.style.display = 'block';
-                
-                setTimeout(() => {
-                    notification.style.display = 'none';
-                }, 3000);
-            }
-
-            // Обработчики событий
-            downloadBtn.addEventListener('click', directDownload);
-            
-            quickDownloadBtn.addEventListener('click', quickDownload);
-            
-            // Двойной клик для быстрого скачивания
-            downloadBtn.addEventListener('dblclick', function(e) {
-                e.preventDefault();
-                
-                const enteredAppId = appIdInput.value.trim();
-                if (!enteredAppId) return;
-                
-                // Пропускаем все проверки и сразу скачиваем
-                currentAppId = enteredAppId;
-                currentGameName = `App ID: ${enteredAppId}`;
-                
-                showNotification('Быстрое скачивание (без проверок)', 'warning');
-                downloadFile();
-            });
-            
-            appIdInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    directDownload();
-                }
-            });
-            
-            // Автоматическая проверка информации при вводе App ID
-            appIdInput.addEventListener('input', function() {
-                const appId = this.value.trim();
-                
-                // Очищаем предыдущий таймаут
-                clearTimeout(searchTimeout);
-                
-                // Если пустое поле
-                if (!appId) {
-                    gameInfoCard.style.display = 'none';
-                    errorCard.classList.remove('show');
-                    loading.classList.remove('show');
-                    return;
-                }
-                
-                // Проверяем формат App ID
-                if (!/^\d+$/.test(appId)) {
-                    gameInfoCard.style.display = 'none';
-                    errorCard.classList.add('show');
-                    document.getElementById('errorMessage').textContent = 'App ID должен содержать только цифры';
-                    loading.classList.remove('show');
-                    return;
-                }
-                
-                // Проверяем, что App ID не однозначный (меньше 2 символов)
-                if (appId.length < 2) {
-                    gameInfoCard.style.display = 'none';
-                    errorCard.classList.remove('show');
-                    loading.classList.remove('show');
-                    return;
-                }
-                
-                // Показываем индикатор загрузки
-                loading.classList.add('show');
-                gameInfoCard.style.display = 'none';
-                errorCard.classList.remove('show');
-                
-                // Устанавливаем таймаут на 2 секунды
-                searchTimeout = setTimeout(() => {
-                    checkGameInfo(appId);
-                }, 2000);
-            });
-            
-            // Фокус на поле ввода при загрузке
-            appIdInput.focus();
         });
+        
+        // Автоматическая проверка информации при вводе App ID
+        appIdInput.addEventListener('input', function() {
+    const appId = this.value.trim();
+    
+    // Очищаем предыдущий таймаут
+    clearTimeout(searchTimeout);
+    
+    // Если пустое поле
+    if (!appId) {
+        gameInfoCard.style.display = 'none';
+        errorCard.classList.remove('show');
+        loading.classList.remove('show');
+        return;
+    }
+    
+    // Проверяем формат App ID
+    if (!/^\d+$/.test(appId)) {
+        gameInfoCard.style.display = 'none';
+        errorCard.classList.add('show');
+        document.getElementById('errorMessage').textContent = 'App ID должен содержать только цифры';
+        loading.classList.remove('show');
+        return;
+    }
+    
+    // Проверяем, что App ID не однозначный (меньше 2 символов)
+    if (appId.length < 2) {
+        gameInfoCard.style.display = 'none';
+        errorCard.classList.remove('show');
+        loading.classList.remove('show');
+        return;
+    }
+    
+    // Показываем индикатор загрузки
+    loading.classList.add('show');
+    gameInfoCard.style.display = 'none';
+    errorCard.classList.remove('show');
+    
+    // Устанавливаем таймаут на 2 секунды
+    searchTimeout = setTimeout(() => {
+        checkGameInfo(appId);
+    }, 2000);
+});
+        
+        // Фокус на поле ввода при загрузке
+        appIdInput.focus();
+    });
     </script>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
 </body>
 </html>
-
