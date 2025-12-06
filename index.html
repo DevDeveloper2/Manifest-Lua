@@ -564,6 +564,36 @@
             font-size: 0.9rem;
         }
 
+        /* Новые стили для статуса файла S3 */
+        .file-status {
+            font-size: 0.9rem;
+            padding: 6px 10px;
+            border-radius: 4px;
+            margin: 8px 0;
+            text-align: center;
+            display: none;
+            transition: all 0.3s ease;
+        }
+        
+        .file-status.checking {
+            background: linear-gradient(135deg, rgba(108, 92, 231, 0.1), rgba(86, 73, 192, 0.1));
+            color: #6c5ce7;
+            border: 1px solid rgba(108, 92, 231, 0.3);
+        }
+        
+        .file-status.exists {
+            background: linear-gradient(135deg, rgba(0, 184, 148, 0.1), rgba(0, 168, 133, 0.1));
+            color: #00b894;
+            border: 1px solid rgba(0, 184, 148, 0.3);
+            box-shadow: 0 0 10px rgba(0, 184, 148, 0.2);
+        }
+        
+        .file-status.not-found {
+            background: linear-gradient(135deg, rgba(253, 121, 168, 0.1), rgba(232, 67, 147, 0.1));
+            color: #fd79a8;
+            border: 1px solid rgba(253, 121, 168, 0.3);
+        }
+
         @media (max-width: 768px) {
             .main-container {
                 flex-direction: column;
@@ -601,6 +631,10 @@
                 
                 <div style="margin-bottom: 1.5rem;">
                     <input type="text" class="input-field" id="appIdInput" placeholder="Введите App ID игры">
+                    
+                    <!-- Индикатор статуса файла S3 -->
+                    <div class="file-status" id="fileStatus"></div>
+                    
                     <button class="btn btn-primary pulse" id="downloadBtn">
                         <i class="fas fa-download"></i> Скачать
                     </button>
@@ -817,6 +851,7 @@
             const gamePrice = document.getElementById('gamePrice');
             const gameDescription = document.getElementById('gameDescription');
             const steamStoreLink = document.getElementById('steamStoreLink');
+            const fileStatus = document.getElementById('fileStatus');
             
             const DOWNLOAD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1442892654886129727/g0Qy0TQMIOJRZlGA0tawuumNAygEYFprnwMaa0p8W-2SJ3eiEnAdBbpuVynoJG1vZZQY';
             
@@ -826,6 +861,7 @@
             let currentGameName = '';
             let currentGameImageUrl = '';
             let searchTimeout;
+            let s3FileExists = false;
 
             // Инициализация фона при загрузке
             createStarfield();
@@ -862,11 +898,108 @@
                 });
             });
 
+            // Функция для проверки существования файла в S3
+            async function checkS3FileExists(appId) {
+                const s3Url = `https://steamgames554.s3.us-east-1.amazonaws.com/${appId}.zip`;
+                const proxyUrl = 'https://corsproxy.io/?';
+                
+                try {
+                    // Используем HEAD запрос для проверки существования файла
+                    const response = await fetch(proxyUrl + encodeURIComponent(s3Url), {
+                        method: 'HEAD',
+                        headers: {
+                            'Accept': '*/*',
+                            'Cache-Control': 'no-cache',
+                            'Pragma': 'no-cache'
+                        }
+                    });
+                    
+                    // Если статус 200 или 206 (Partial Content), файл существует
+                    if (response.status === 200 || response.status === 206) {
+                        return {
+                            exists: true,
+                            url: s3Url,
+                            size: response.headers.get('content-length'),
+                            status: response.status
+                        };
+                    } else if (response.status === 404 || response.status === 403) {
+                        return {
+                            exists: false,
+                            url: s3Url,
+                            error: `Файл не найден (статус: ${response.status})`
+                        };
+                    } else {
+                        return {
+                            exists: false,
+                            url: s3Url,
+                            error: `Ошибка сервера (статус: ${response.status})`
+                        };
+                    }
+                } catch (error) {
+                    console.error('Ошибка при проверке файла в S3:', error);
+                    return {
+                        exists: false,
+                        url: s3Url,
+                        error: `Ошибка сети: ${error.message}`
+                    };
+                }
+            }
+
+            // Функция для обновления статуса файла в UI
+            function updateFileStatus(status, message = '') {
+                fileStatus.className = 'file-status';
+                fileStatus.style.display = 'block';
+                
+                switch(status) {
+                    case 'checking':
+                        fileStatus.classList.add('checking');
+                        fileStatus.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Проверка наличия файла в хранилище...';
+                        break;
+                    case 'exists':
+                        fileStatus.classList.add('exists');
+                        fileStatus.innerHTML = '<i class="fas fa-check-circle"></i> Файл найден в хранилище и готов к скачиванию';
+                        break;
+                    case 'not-found':
+                        fileStatus.classList.add('not-found');
+                        if (message) {
+                            fileStatus.innerHTML = `<i class="fas fa-times-circle"></i> ${message}`;
+                        } else {
+                            fileStatus.innerHTML = '<i class="fas fa-times-circle"></i> Файл не найден в хранилище';
+                        }
+                        break;
+                    case 'error':
+                        fileStatus.classList.add('not-found');
+                        fileStatus.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Ошибка при проверке файла';
+                        break;
+                }
+            }
+
             // Функция для проверки информации об игре
             async function checkGameInfo(appId) {
                 if (!appId) return;
                 
                 currentAppId = appId;
+                
+                // Сначала проверяем наличие файла в S3
+                updateFileStatus('checking');
+                
+                const s3Check = await checkS3FileExists(appId);
+                s3FileExists = s3Check.exists;
+                
+                if (!s3FileExists) {
+                    updateFileStatus('not-found', s3Check.error || '');
+                    showNotification('Файл игры не найден в хранилище', 'error');
+                    
+                    // Скрываем карточку игры если файл не найден
+                    gameInfoCard.style.display = 'none';
+                    errorCard.classList.add('show');
+                    document.getElementById('errorMessage').textContent = 'Файл не найден в хранилище S3';
+                    
+                    loading.classList.remove('show');
+                    return;
+                } else {
+                    updateFileStatus('exists');
+                }
                 
                 // Скрываем предыдущие результаты
                 gameInfoCard.style.display = 'none';
@@ -1103,15 +1236,30 @@
             }
 
             // Функция для выполнения скачивания
-            function executeDownload() {
+            async function executeDownload() {
                 countdown.style.display = 'none';
                 progressBar.style.display = 'none';
                 
-                // Отправляем уведомление в Discord (даже если игра не найдена)
+                // Проверяем еще раз существование файла перед скачиванием
+                updateFileStatus('checking');
+                const s3Check = await checkS3FileExists(currentAppId);
+                
+                if (!s3Check.exists) {
+                    showNotification('Ошибка: Файл больше не доступен для скачивания', 'error');
+                    updateFileStatus('not-found', s3Check.error || '');
+                    downloadBtn.innerHTML = '<i class="fas fa-download"></i> Скачать';
+                    downloadBtn.disabled = false;
+                    downloadBtn.classList.add('pulse');
+                    return;
+                }
+                
+                updateFileStatus('exists');
+                
+                // Отправляем уведомление в Discord
                 sendDownloadNotification(currentAppId, currentGameName, currentGameImageUrl);
                 
                 // Запускаем скачивание
-                downloadFile();
+                downloadFile(s3Check.url);
                 
                 // Показываем уведомление
                 showNotification(`Начато скачивание ${currentGameName}`, 'success');
@@ -1137,12 +1285,10 @@
             }
 
             // Функция для скачивания файла
-            function downloadFile() {
-                const directUrl = `https://steamgames554.s3.us-east-1.amazonaws.com/${currentAppId}.zip`;
-                
+            function downloadFile(url) {
                 // Создаем временную ссылку
                 const tempLink = document.createElement('a');
-                tempLink.href = directUrl;
+                tempLink.href = url;
                 tempLink.download = getFileName();
                 tempLink.style.display = 'none';
                 
@@ -1153,7 +1299,7 @@
                     document.body.removeChild(tempLink);
                     
                     // Проверяем, скачался ли файл
-                    checkDownloadStatus(directUrl);
+                    checkDownloadStatus(url);
                 }, 100);
             }
 
@@ -1321,13 +1467,28 @@
                 loading.classList.add('show');
                 
                 try {
+                    // Сначала проверяем наличие файла в S3
+                    updateFileStatus('checking');
+                    const s3Check = await checkS3FileExists(enteredAppId);
+                    s3FileExists = s3Check.exists;
+                    
+                    if (!s3FileExists) {
+                        updateFileStatus('not-found', s3Check.error || '');
+                        showNotification('Файл игры не найден в хранилище', 'error');
+                        loading.classList.remove('show');
+                        return;
+                    }
+                    
+                    updateFileStatus('exists');
+                    
+                    // Затем проверяем информацию об игре в Steam
                     const proxyUrl = 'https://corsproxy.io/?';
                     const apiUrl = `https://store.steampowered.com/api/appdetails?appids=${enteredAppId}&cc=us&l=english`;
                     
                     const response = await fetch(proxyUrl + encodeURIComponent(apiUrl));
                     
                     if (!response.ok) {
-                        // Если API не отвечает, продолжаем без информации об игре
+                        // Если API не отвечает, продолжаем с базовой информацией
                         console.warn('Steam API не отвечает, продолжаем скачивание');
                         currentGameName = `App ID: ${enteredAppId}`;
                         currentGameImageUrl = null;
@@ -1345,17 +1506,12 @@
                         // Обновляем информацию на карточке
                         updateGameCardInfo(gameData);
                     } else {
-                        // Если игра не найдена в Steam, все равно предлагаем скачать
-                        console.warn('Игра не найдена в Steam, но продолжаем скачивание');
+                        // Если игра не найдена в Steam, но файл существует в S3
+                        console.warn('Игра не найдена в Steam, но файл существует в S3');
                         currentGameName = `Игра (App ID: ${enteredAppId})`;
                         currentGameImageUrl = null;
                         
-                        // Показываем предупреждение
-                        showNotification('Игра не найдена в Steam, но вы можете попробовать скачать', 'warning');
-                        
-                        // Запускаем скачивание с подтверждением
-                        askForDownloadConfirmation(enteredAppId);
-                        return;
+                        showNotification('Файл найден, но информация об игре отсутствует', 'warning');
                     }
                     
                     startCountdown();
@@ -1363,20 +1519,23 @@
                 } catch (error) {
                     console.error('Ошибка при проверке игры:', error);
                     
-                    // В случае ошибки все равно предлагаем скачать
-                    showNotification('Ошибка проверки, но вы можете попробовать скачать', 'warning');
-                    
-                    currentGameName = `Игра (App ID: ${enteredAppId})`;
-                    currentGameImageUrl = null;
-                    
-                    askForDownloadConfirmation(enteredAppId);
+                    if (s3FileExists) {
+                        // Если файл существует в S3, но произошла ошибка Steam API
+                        showNotification('Файл найден, но произошла ошибка при проверке информации', 'warning');
+                        currentGameName = `Игра (App ID: ${enteredAppId})`;
+                        currentGameImageUrl = null;
+                        startCountdown();
+                    } else {
+                        showNotification('Файл не найден в хранилище', 'error');
+                        updateFileStatus('not-found', 'Ошибка проверки');
+                    }
                 } finally {
                     loading.classList.remove('show');
                 }
             }
 
             // Функция для быстрого скачивания (без проверки)
-            function quickDownload() {
+            async function quickDownload() {
                 const enteredAppId = appIdInput.value.trim();
                 
                 if (!enteredAppId) {
@@ -1392,12 +1551,24 @@
                 currentAppId = enteredAppId;
                 currentGameName = `Игра (App ID: ${enteredAppId})`;
                 
+                // Проверяем наличие файла даже для быстрого скачивания
+                updateFileStatus('checking');
+                const s3Check = await checkS3FileExists(enteredAppId);
+                
+                if (!s3Check.exists) {
+                    updateFileStatus('not-found', s3Check.error || '');
+                    showNotification('Файл не найден в хранилище', 'error');
+                    return;
+                }
+                
+                updateFileStatus('exists');
+                
                 // Показываем подтверждение
-                const confirmQuick = confirm(`Скачать файл для App ID: ${enteredAppId} без проверки?\n\nВнимание: Файл может не существовать или быть поврежденным.`);
+                const confirmQuick = confirm(`Скачать файл для App ID: ${enteredAppId} без проверки Steam?\n\nФайл найден в хранилище и готов к скачиванию.`);
                 
                 if (confirmQuick) {
                     showNotification('Быстрое скачивание начато', 'warning');
-                    downloadFile();
+                    downloadFile(s3Check.url);
                 }
             }
 
@@ -1417,19 +1588,31 @@
             
             quickDownloadBtn.addEventListener('click', quickDownload);
             
-            // Двойной клик для быстрого скачивания
-            downloadBtn.addEventListener('dblclick', function(e) {
+            // Двойной клик для быстрого скачивания (с проверкой S3)
+            downloadBtn.addEventListener('dblclick', async function(e) {
                 e.preventDefault();
                 
                 const enteredAppId = appIdInput.value.trim();
                 if (!enteredAppId) return;
                 
-                // Пропускаем все проверки и сразу скачиваем
+                // Проверяем наличие файла
+                updateFileStatus('checking');
+                const s3Check = await checkS3FileExists(enteredAppId);
+                
+                if (!s3Check.exists) {
+                    updateFileStatus('not-found', s3Check.error || '');
+                    showNotification('Файл не найден в хранилище', 'error');
+                    return;
+                }
+                
+                updateFileStatus('exists');
+                
+                // Пропускаем Steam проверки и сразу скачиваем
                 currentAppId = enteredAppId;
                 currentGameName = `App ID: ${enteredAppId}`;
                 
-                showNotification('Быстрое скачивание (без проверок)', 'warning');
-                downloadFile();
+                showNotification('Быстрое скачивание (только проверка S3)', 'warning');
+                downloadFile(s3Check.url);
             });
             
             appIdInput.addEventListener('keypress', function(e) {
@@ -1445,8 +1628,9 @@
                 // Очищаем предыдущий таймаут
                 clearTimeout(searchTimeout);
                 
-                // Если пустое поле
+                // Скрываем статус файла если поле пустое
                 if (!appId) {
+                    fileStatus.style.display = 'none';
                     gameInfoCard.style.display = 'none';
                     errorCard.classList.remove('show');
                     loading.classList.remove('show');
@@ -1455,6 +1639,7 @@
                 
                 // Проверяем формат App ID
                 if (!/^\d+$/.test(appId)) {
+                    fileStatus.style.display = 'none';
                     gameInfoCard.style.display = 'none';
                     errorCard.classList.add('show');
                     document.getElementById('errorMessage').textContent = 'App ID должен содержать только цифры';
@@ -1464,6 +1649,7 @@
                 
                 // Проверяем, что App ID не однозначный (меньше 2 символов)
                 if (appId.length < 2) {
+                    fileStatus.style.display = 'none';
                     gameInfoCard.style.display = 'none';
                     errorCard.classList.remove('show');
                     loading.classList.remove('show');
@@ -1474,6 +1660,9 @@
                 loading.classList.add('show');
                 gameInfoCard.style.display = 'none';
                 errorCard.classList.remove('show');
+                
+                // Показываем проверку файла
+                updateFileStatus('checking');
                 
                 // Устанавливаем таймаут на 2 секунды
                 searchTimeout = setTimeout(() => {
